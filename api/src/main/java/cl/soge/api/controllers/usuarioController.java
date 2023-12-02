@@ -2,6 +2,7 @@ package cl.soge.api.controllers;
 import cl.soge.api.services.usuarioServices;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +16,8 @@ public class usuarioController {
     usuarioServices usuarioServices;
 
     @PostMapping("/login")
-    public Boolean login(@RequestParam("rut") String rut, @RequestParam("contraseña") String contraseña){
-        Boolean respuesta = usuarioServices.login(rut, contraseña);
+    public ResponseEntity<Boolean> login(@RequestParam String rut, @RequestParam String contraseña){
+        ResponseEntity<Boolean> respuesta = usuarioServices.login(rut, contraseña);
         return respuesta;
     }
 
