@@ -10,8 +10,8 @@ import java.util.List;
 
 @Repository
 public interface usuarioRepository extends JpaRepository<usuarioModel, String> {
-    @Query(value = "SELECT * FROM usuario WHERE usuario.rut = :rut AND usuario.contraseña = :contraseña", nativeQuery = true)
-    usuarioModel loginParaUsuario(@Param("rut") String rut, @Param("contraseña") String contraseña);
+    @Query(value = "SELECT * FROM usuario WHERE usuario.rut = :rut AND usuario.password = :password", nativeQuery = true)
+    usuarioModel loginParaUsuario(@Param("rut") String rut, @Param("password") String password);
 
     @Query(value = "SELECT ed.id_edificio, pr.id_propiedad, us.rut, us.tipo_usuario " +
             "FROM usuario us " +
