@@ -1,7 +1,6 @@
 package cl.soge.api.models;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,13 +16,14 @@ import java.util.List;
 public class propiedadModel {
 
     @Id
-    @Column(nullable = false, unique = true)
+    @Column(name = "id_propiedad", nullable = false, unique = true)
     private Integer numero_departamento;
+
     private Integer tamaño_inmueble;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "propiedades")
-    private List<usuarioModel> usuarios;
+    @OneToOne
+    @JoinColumn(name = "id_usuario")
+    private usuarioModel usuario;
 
     @JsonIgnore
     @OneToOne

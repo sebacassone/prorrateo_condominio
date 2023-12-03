@@ -28,4 +28,20 @@ public class usuarioController {
             return (ResponseEntity<Map<String, Object>>) ResponseEntity.status(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/infoUsuario/{rut}")
+    public ResponseEntity<Map<String, Object>> infoUsuario(@PathVariable String rut) {
+        try {
+            Map<String, Object> usuarioInfo = usuarioServices.infoUsuario(rut);
+            if (usuarioInfo != null) {
+                return ResponseEntity.status(HttpStatus.OK).body(usuarioInfo);
+            } else {
+                // Si no se encuentra información del usuario, podría ser que no existe o no tiene propiedades
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+        } catch (Exception error) {
+            // En caso de un error no manejado, devuelve INTERNAL_SERVER_ERROR
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }
