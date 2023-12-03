@@ -72,7 +72,7 @@
     </v-app>
 </template>
 
-<style>
+<style scoped>
     header{
         background-color: #f5f0bb;
         height: 270px;
