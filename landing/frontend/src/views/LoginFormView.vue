@@ -87,8 +87,6 @@
     .v-main{
         background-color: #f5f0bb;
     }
-
-
 </style>
 
 <script>
@@ -140,27 +138,27 @@
             async login() {
                 try {
                     const response = await axios.post(
-                        'http://localhost:8081/api/login',
+                        'http://localhost:8080/login',
                         {
                             rut: this.rut,
-                            contrasena: this.contrasena
+                            contraseña: this.contrasena
                         }
                     );
-
-                    const responseStatus = response.data.substring(0, 7);
-                    const userId = response.data.substring(7);
-
-                    localStorage.setItem('userId', userId)
-
-                    if (responseStatus === 'loggedC') {
-                        localStorage.setItem('userType', 'client')
-                        this.$router.push({name: 'add-ticket'})
-                    }else if (responseStatus === 'loggedL'){
-                        localStorage.setItem('userType', 'leadership')
-                        this.$router.push({name: 'assign-ticket'});
-                    }else{
-                        null
-                    }
+                    console.log(response.data);
+                    //const responseStatus = response.data.substring(0, 7);
+                    //const userId = response.data.substring(7);
+//
+                    //localStorage.setItem('userId', userId)
+//
+                    //if (responseStatus === 'loggedC') {
+                    //    localStorage.setItem('userType', 'client')
+                    //    this.$router.push({name: 'add-ticket'})
+                    //}else if (responseStatus === 'loggedL'){
+                    //    localStorage.setItem('userType', 'leadership')
+                    //    this.$router.push({name: 'assign-ticket'});
+                    //}else{
+                    //    null
+                    //}
 
                 } catch (error) {
                     console.error('A');
