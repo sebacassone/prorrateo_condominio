@@ -6,19 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class usuarioServices {
     @Autowired
     usuarioRepository usuarioRepository;
 
-    public ResponseEntity<Boolean> login(String rut, String contraseña){
-        ResponseEntity<Boolean> respuesta;
+    public Map<String, Object> login(String rut, String contraseña){
         usuarioModel usuario = usuarioRepository.loginParaUsuario(rut, contraseña);
         if(usuario != null){
-            respuesta = ResponseEntity.ok(true);
+            Map<String, Object> respuesta = new HashMap<>();
+            respuesta.put("nombre", usuario.getNombre());
+            respuesta.put("tipoUsuario", usuario.getTipoUsuario());
+            return respuesta;
         } else {
-            respuesta = ResponseEntity.ok(false);
+            return null;
         }
-        return respuesta;
     }
+
 }
