@@ -138,7 +138,7 @@
             async login() {
                 try {
                     const response = await axios.post(
-                        'http://localhost:8080/login',
+                        'http://localhost:5432/api/v1/login',
                         {
                             rut: this.rut,
                             contraseña: this.contrasena
