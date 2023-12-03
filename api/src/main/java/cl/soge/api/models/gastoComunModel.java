@@ -22,7 +22,7 @@ public class gastoComunModel {
     private Date fecha_registro;
 
     @ManyToOne
-    @JoinColumn(name = "id_eficio")
+    @JoinColumn(name = "id_edificio")
     private edificioModel edificio;
 
     @ManyToOne
