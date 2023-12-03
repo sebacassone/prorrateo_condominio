@@ -13,9 +13,12 @@ public interface usuarioRepository extends JpaRepository<usuarioModel, String> {
     @Query(value = "SELECT * FROM usuario WHERE usuario.rut = :rut AND usuario.contraseña = :contraseña", nativeQuery = true)
     usuarioModel loginParaUsuario(@Param("rut") String rut, @Param("contraseña") String contraseña);
 
-    @Query(value = "SELECT u.id_edificio, p.id_propiedad, u.rut, u.tipo_usuario " +
-            "FROM usuario u " +
-            "JOIN Propiedad p ON u.rut = p.id_usuario " +
-            "WHERE u.rut = :rut", nativeQuery = true)
+    @Query(value = "SELECT ed.id_edificio, pr.id_propiedad, us.rut, us.tipo_usuario " +
+            "FROM usuario us " +
+            "JOIN usuario_propiedad up ON us.rut = up.rut " +
+            "JOIN Propiedad pr ON up.numero_departamento = pr.id_propiedad " +
+            "JOIN Edificio ed ON pr.id_edificio = ed.id_edificio " +
+            "WHERE us.rut = :rut", nativeQuery = true)
     List<Object[]> buscarPropiedadesPorUsuario(@Param("rut") String rut);
+
 }

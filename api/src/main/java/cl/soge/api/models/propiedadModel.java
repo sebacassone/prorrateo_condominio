@@ -1,6 +1,7 @@
 package cl.soge.api.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,7 @@ public class propiedadModel {
 
     private Integer tamaño_inmueble;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "id_usuario")
     private usuarioModel usuario;
 
