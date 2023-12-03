@@ -22,9 +22,9 @@ public class propiedadModel {
 
     private Integer tamaño_inmueble;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private usuarioModel usuario;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "propiedades")
+    private List<usuarioModel> usuarios;
 
     @JsonIgnore
     @OneToOne
