@@ -18,4 +18,11 @@ public class edificioModel {
     private String nombreEdificio;
     @Column(name = "direccion_edificio")
     private String direccionEdificio;
+    @Column(name = "cantidad_pisos")
+    private Integer cantidadPisos;
+    @Column(name = "cantidad_departamentos")
+    private Integer CantidadIngresos;
+    @Column(name = "cantidad_egresos")
+    private Integer CantidadEgresos;
+
 }
