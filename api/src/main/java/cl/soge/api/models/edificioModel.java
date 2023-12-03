@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class edificioModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_edificio", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private Integer idEdificio;
     @Column(name = "nombre_edificio", nullable = false)
     private String nombreEdificio;
