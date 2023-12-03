@@ -21,7 +21,7 @@ public class usuarioModel {
     private String apellido;
     private Integer tipoUsuario; // 0, 1, 2, 3
     private String correo;
-    private String contraseña;
+    private String password;
 
     @JsonIgnore
     @ManyToOne

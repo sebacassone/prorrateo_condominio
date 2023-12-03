@@ -18,7 +18,7 @@ public class usuarioController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, Object> jsonMap){
         try {
-            Map<String, Object> usuarioInfo = usuarioServices.login((String) jsonMap.get("rut"), (String) jsonMap.get("contraseña"));
+            Map<String, Object> usuarioInfo = usuarioServices.login((String) jsonMap.get("rut"), (String) jsonMap.get("password"));
             if (usuarioInfo != null) {
                 return ResponseEntity.status(HttpStatus.OK).body(usuarioInfo);
             } else {
