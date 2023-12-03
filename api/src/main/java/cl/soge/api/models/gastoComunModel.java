@@ -1,11 +1,13 @@
 package cl.soge.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,12 +23,25 @@ public class gastoComunModel {
     private Date fecha_emision;
     private Date fecha_registro;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_edificio")
     private edificioModel edificio;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private usuarioModel usuario;
 
+    @JsonIgnore
+    @ManyToMany(cascade = {
+            CascadeType.MERGE,
+            CascadeType.PERSIST
+    })
+    @JoinTable(
+            name = "gastoCategoria",
+            joinColumns = {@JoinColumn(name="id_gasto")},
+            inverseJoinColumns = {@JoinColumn(name="id_categoria")}
+    )
+    private List<categoriaModel> categorias;
 }
