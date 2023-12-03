@@ -20,6 +20,6 @@ public class usuarioModel {
     private String correo;
     private String contraseña;
     @ManyToOne
-    @JoinColumn(name = "idEdficio")
+    @JoinColumn(name = "idEdificio")
     private edificioModel edificio;
 }
