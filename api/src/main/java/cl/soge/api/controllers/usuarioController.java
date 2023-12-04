@@ -16,23 +16,9 @@ public class usuarioController {
     usuarioServices usuarioServices;
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, Object> jsonMap){
+    public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, Object> jsonMap) {
         try {
-            Map<String, Object> usuarioInfo = usuarioServices.login((String) jsonMap.get("rut"), (String) jsonMap.get("password"));
-            if (usuarioInfo != null) {
-                return ResponseEntity.status(HttpStatus.OK).body(usuarioInfo);
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-            }
-        } catch (Exception error) {
-            return (ResponseEntity<Map<String, Object>>) ResponseEntity.status(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @GetMapping("/infoUsuario/{rut}")
-    public ResponseEntity<Map<String, Object>> infoUsuario(@PathVariable String rut) {
-        try {
-            Map<String, Object> usuarioInfo = usuarioServices.infoUsuario(rut);
+            Map<String, Object> usuarioInfo = usuarioServices.infoUsuario((String) jsonMap.get("rut"), (String) jsonMap.get("password"));
             if (usuarioInfo != null) {
                 return ResponseEntity.status(HttpStatus.OK).body(usuarioInfo);
             } else {

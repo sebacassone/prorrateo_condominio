@@ -1,6 +1,5 @@
 package cl.soge.api.services;
 import cl.soge.api.repositories.usuarioRepository;
-import cl.soge.api.models.usuarioModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,27 +17,14 @@ public class usuarioServices {
     @Autowired
     usuarioRepository usuarioRepository;
 
-    public Map<String, Object> login(String rut, String contraseña){
-        usuarioModel usuario = usuarioRepository.loginParaUsuario(rut, contraseña);
-        if(usuario != null){
-            Map<String, Object> respuesta = new HashMap<>();
-            respuesta.put("nombre", usuario.getNombre());
-            respuesta.put("tipoUsuario", usuario.getTipoUsuario());
-            return respuesta;
-        } else {
-            return null;
-        }
-    }
-
-
-
-    public Map<String, Object> infoUsuario(String rut) {
-        List<Object[]> resultados = usuarioRepository.buscarPropiedadesPorUsuario(rut);
+    public Map<String, Object> infoUsuario(String rut, String password) {
+        List<Object[]> resultados = usuarioRepository.buscarPropiedadesPorUsuario(rut, password);
 
         if (resultados != null && !resultados.isEmpty()) {
             Map<String, Object> respuesta = new HashMap<>();
             List<Integer> idsPropiedades = new ArrayList<>();
 
+            /* Se debe modificar a futuro, no puede asumir que es solo un edificio */
             // Asumiendo que hay solo un edificio, se toma el id del edificio de la primera fila
             Integer idEdificio = (Integer) resultados.get(0)[0]; // Cambiar el índice si es necesario
 
@@ -58,7 +44,4 @@ public class usuarioServices {
             return null;
         }
     }
-
-
-
 }

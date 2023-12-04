@@ -19,7 +19,7 @@ public class usuarioModel {
     private String rut;
     private String nombre;
     private String apellido;
-    private Integer tipoUsuario; // 0, 1, 2, 3
+    private Integer tipoUsuario; // 0 = Admin, 1 = Residente, y 2 = Propietario
     private String correo;
     private String password;
 

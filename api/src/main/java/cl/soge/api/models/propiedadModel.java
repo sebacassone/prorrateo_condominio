@@ -17,7 +17,7 @@ import java.util.List;
 public class propiedadModel {
 
     @Id
-    @Column(name = "id_propiedad", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private Integer numero_departamento;
 
     private Integer tamaño_inmueble;
