@@ -40,6 +40,8 @@ public class usuarioModel {
     )
     List<propiedadModel> propiedades;
 
+
+
     // La relación de muchos es a muchos de notificación no se escribe todavía por que no es necesario
     // para los requerimientos funcionales actuales.
 }

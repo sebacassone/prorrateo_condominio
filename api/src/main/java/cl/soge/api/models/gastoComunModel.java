@@ -15,9 +15,12 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "gasto_comun")
 public class gastoComunModel {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Esta línea ha sido modificada
     @Column(name = "id_gasto", nullable = false, unique = true)
     private Integer idGasto;
+
     private String descripcion_gasto;
     private Integer monto_gasto;
     private Date fecha_emision;
@@ -44,4 +47,10 @@ public class gastoComunModel {
             inverseJoinColumns = {@JoinColumn(name="id_categoria")}
     )
     private List<categoriaModel> categorias;
+
+    public void setIdEdificio(Integer idEdificio) {
+    }
+
+    public void setIdUsuario(Integer idUsuario) {
+    }
 }
