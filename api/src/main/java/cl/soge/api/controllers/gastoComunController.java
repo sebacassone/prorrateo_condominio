@@ -1,5 +1,6 @@
 package cl.soge.api.controllers;
 
+import cl.soge.api.models.edificioModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import cl.soge.api.models.gastoComunModel;
 import cl.soge.api.services.gastoComunServices;
+import  cl.soge.api.services.usuarioServices;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,12 +22,9 @@ import java.util.Map;
 @RestController
 public class gastoComunController {
 
-    private final gastoComunServices gastoComunServices;
-
     @Autowired
-    public gastoComunController(gastoComunServices gastoComunServices) {
-        this.gastoComunServices = gastoComunServices;
-    }
+    gastoComunServices gastoComunServices;
+    usuarioServices usuarioServices;
 
     @PostMapping("/registroGastoComun")
     public ResponseEntity<Map<String, String>> registroGastoComun(@RequestBody Map<String, Object> jsonMap) {
@@ -37,10 +36,11 @@ public class gastoComunController {
             nuevoGasto.setMonto_gasto(Integer.valueOf(jsonMap.get("monto_gasto").toString()));
             nuevoGasto.setFecha_emision(new SimpleDateFormat("yyyy-MM-dd").parse((String) jsonMap.get("fecha_emision")));
             nuevoGasto.setFecha_registro(new Date());
-            nuevoGasto.setIdEdificio(Integer.valueOf(jsonMap.get("id_edificio").toString()));
-            nuevoGasto.setIdUsuario(Integer.valueOf((String) jsonMap.get("id_usuario")));
 
-            boolean result = this.gastoComunServices.registrarGastoComun(nuevoGasto);
+            //nuevoGasto.setEdificio(Integer.valueOf(jsonMap.get("id_edificio").toString()));
+            //nuevoGasto.setUsuario(Integer.valueOf((String) jsonMap.get("id_usuario")));
+
+            boolean result = this.gastoComunServices.registrarGastoComun(nuevoGasto, Integer.valueOf(jsonMap.get("id_edificio").toString()), (String) jsonMap.get("id_usuario"));
             if (result) {
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Gasto común registrado con éxito"));
             } else {

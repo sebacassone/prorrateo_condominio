@@ -48,9 +48,4 @@ public class gastoComunModel {
     )
     private List<categoriaModel> categorias;
 
-    public void setIdEdificio(Integer idEdificio) {
-    }
-
-    public void setIdUsuario(Integer idUsuario) {
-    }
 }
