@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginFormView from "../views/LoginFormView.vue";
-
+import GastosComunesView from "../views/GastosComunesView.vue";
 const routes = [
   {
       path: '/',
@@ -11,6 +11,11 @@ const routes = [
       name: 'login',
       component: LoginFormView,
   },
+  {
+    path: '/GastoComun',
+    name: 'GastoComun',
+    component: GastosComunesView,
+},
 ]
 
 const router = createRouter({

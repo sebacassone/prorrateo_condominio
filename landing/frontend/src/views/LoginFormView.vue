@@ -4,9 +4,10 @@
             <img
                 class="soge-logo"
                 height="250"
+                background-color="primary"
                 src="../components/images/soge_logo2.png"
             ><img/>
-            </header>
+        </header>
         <v-main class="d-flex align-center justify-center bg-color-black"
                 background-color= "#f5f0bb">
             <v-card
@@ -69,23 +70,39 @@
                 </v-form>
             </v-card>
         </v-main>
+    
     </v-app>
 </template>
 
-<style>
+<style scoped>
     header{
-        background-color: #f5f0bb;
-        height: 270px;
+        position: relative;
+        background-color:rgb(226, 235, 171);
+        height: 123px;
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
+        border-bottom: 3px solid #A9AF7E;
+        
+    }
+
+    .header::before {
+        content: ''; /* Esto crea un pseudo-elemento */
+        position: absolute;
+        top: 50%; /* Posiciona la línea en el medio de .header */
+        width: 100%; /* La línea se extiende a lo largo del ancho completo */
+        height: 2px; /* Altura de la línea */
+        background-color: #a2a2a2; /* Color de la línea */
+        z-index: 1; /* Asegura que la línea esté debajo del logo */
     }
     .soge-logo{
         margin-top: auto;
+        position: relative;
+        z-index: 2;
     }
     .v-main{
-        background-color: #f5f0bb;
+        background-color: rgb(226, 235, 171);
     }
 
 
