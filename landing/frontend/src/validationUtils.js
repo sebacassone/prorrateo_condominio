@@ -55,4 +55,21 @@ export function validarRUT(rut) {
     // Si todo está correcto, retornar verdadero
     return true;
   }
+
+export function formatLoginResponse(infoString) {
+    // Eliminar los caracteres '{' y '}' y dividir por comas
+    let partes = infoString.replace(/[{}]/g, '').split(', ');
   
+    let datos = {};
+  
+    // Recorrer cada parte y asignar valores al objeto datos
+    partes.forEach((parte) => {
+      let [clave, valor] = parte.split('-');
+      datos[clave] = valor;
+    });
+  
+    return datos;
+ }
+
+ 20127313-8
+ 

@@ -12,10 +12,8 @@ import lombok.NoArgsConstructor;
 public class contratoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_contrato", nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private Integer idContrato;
-    @Column(name = "calificar_contrato")
     private Boolean calificarContrato;
-    @Column(name = "url_contrato")
     private String urlContrato;
 }

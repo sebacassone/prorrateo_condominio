@@ -1,28 +1,23 @@
 <template>
-    <v-app>
-        <header>
-            <img
-                class="soge-logo"
-                height="250"
-                background-color="primary"
-                src="../components/images/soge_logo2.png"
-            ><img/>
-        </header>
-        <v-main class="d-flex align-center justify-center bg-color-black"
-                background-color= "#f5f0bb">
-            <v-card
-                
-                color="#0d2c24"
-                class="rounded-lg px-10 py-5 align-center text-center"
-                width="450"
-                :elevation="3"
-                
-            >
-                <div class="py-4 text-h5 text-white font-weight-bold">
-                    Iniciar Sesión
-                </div>
-                
-                <v-form >
+    <header>
+      <img
+          class="soge-logo"
+          height="250"
+          src="../components/images/soge_logo2.png"
+      ><img/>
+    </header>
+    
+    <v-container fluid>
+      <v-row>
+        <v-col cols="12" md="4">
+          <!-- Contenido del primer bloque -->
+          <v-card
+            title="Emitir Egreso"
+            subtitle="..."
+            text="..."
+            variant="tonal"
+          >
+          <v-form >
                             <v-text-field
                                 v-model="rut"
                                 :rules="rutRules"
@@ -66,46 +61,41 @@
                             </div>
                         </v-card-actions>
                 </v-form>
-            </v-card>
-        </v-main>
-    
-    </v-app>
+        </v-card>
+        
+        </v-col>
+        <v-divider color="warning" vertical></v-divider>
+        <v-col cols="12" md="6">
+          <!-- Contenido del segundo bloque -->
+        </v-col>
+      </v-row>
+    </v-container>
 </template>
 
 <style scoped>
     header{
-        position: relative;
-        background-color:rgb(226, 235, 171);
-        height: 123px;
+        background-color: #f5f0bb;
+        height: 270px;
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-bottom: 3px solid #A9AF7E;
-        
-    }
-
-    .header::before {
-        content: ''; /* Esto crea un pseudo-elemento */
-        position: absolute;
-        top: 50%; /* Posiciona la línea en el medio de .header */
-        width: 100%; /* La línea se extiende a lo largo del ancho completo */
-        height: 2px; /* Altura de la línea */
-        background-color: #a2a2a2; /* Color de la línea */
-        z-index: 1; /* Asegura que la línea esté debajo del logo */
     }
     .soge-logo{
         margin-top: auto;
-        position: relative;
-        z-index: 2;
     }
     .v-main{
-        background-color: rgb(226, 235, 171);
+        background-color: #f5f0bb;
     }
+
+    .v-card{
+      margin: 20px;
+      padding: 20px;
+    }
+
 </style>
 
 <script>
-    import appBar from '../appBar.vue'
     import axios from 'axios';
     import {validarRUT} from '../validationUtils.js';
 
@@ -137,9 +127,7 @@
                 },
             ],
         }),
-        components: {
-            appBar
-        },
+
         methods: {
             initFetch() {
                 // Recuperar la cadena JSON del localStorage
@@ -158,7 +146,9 @@
                         this.$router.push({name: 'GastosComunes'});
                     }
                     else {
-                        this.$router.push({name: 'login'});
+                        console.log('Navegando a login');
+                        this.$router.push({name: 'EmitirEgreso'}); //login
+
                     }
                 } 
             },
