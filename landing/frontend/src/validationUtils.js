@@ -71,5 +71,6 @@ export function formatLoginResponse(infoString) {
     return datos;
  }
 
- 20127313-8
- 
+export function formatoNumerico(cadena) {
+  return /^[0-9]+$/.test(cadena);
+}
