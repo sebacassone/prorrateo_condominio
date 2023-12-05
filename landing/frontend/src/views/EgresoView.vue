@@ -45,6 +45,7 @@
                   required
                   :counter="120"
                   :rules="contraRules"
+                  maxlength="120"
                   label="Descripción"
                   variant="underlined"
                   placeholder="Ingresa una descripción"

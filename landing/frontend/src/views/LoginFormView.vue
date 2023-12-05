@@ -27,6 +27,7 @@
                                 v-model="rut"
                                 :rules="rutRules"
                                 :counter="10"
+                                maxlength="10"
                                 label="RUT"
                                 variant="underlined"
                                 required
