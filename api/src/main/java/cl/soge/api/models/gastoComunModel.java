@@ -27,6 +27,7 @@ public class gastoComunModel {
     private Date fechaEmision;
     private Date fechaRegistro;
 
+
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_edificio")
