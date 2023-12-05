@@ -79,7 +79,6 @@ public class prorrateoServices {
             Integer añoInt = Integer.parseInt(fecha.split("-")[0]);
             // Se obtiene los m2 del departamento, m2 del edificio, y gastos comunes del edificio. Luego se calcula el monto del prorrateo
             Integer prorrateoMonto = calcularMontoProrrateo(gastoComunRepository.obtenerDatosParaProrrateo(numeroDepto, idEdificio, mesInt, añoInt));
-            System.out.println(prorrateoMonto);
             if (prorrateoMonto == null) {
                 return null;
             }
@@ -88,7 +87,7 @@ public class prorrateoServices {
             prorrateo.setPropiedad(propiedad);
             prorrateo.setMesAñoProrrateo(fechaDate);
             prorrateo.setMontoProrrateo(prorrateoMonto);
-            // prorrateoRepository.save(prorrateo);
+            prorrateoRepository.save(prorrateo);
             return prorrateoMonto;
         } catch (Exception error) {
             error.printStackTrace();
