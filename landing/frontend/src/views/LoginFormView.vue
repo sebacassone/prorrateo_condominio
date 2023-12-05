@@ -41,12 +41,10 @@
                                 :rules="contraRules"
                                 label="Contraseña"
                                 variant="underlined"
-                                :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                                
                                 :type="show1 ? 'text' : 'password'"
                                 placeholder=""
                                 hint="Ingrese su contraseña para acceder al sistema"
-                                class="input-group--focused"
-                                @click="show2 = !show2"
                                 
                             ></v-text-field>
 
@@ -97,7 +95,7 @@
     export default {
         data: () => ({
             rut: '',
-            password: '',
+            contrasena: '',
             visible: false,
             show1: true,
             loading: false,
@@ -127,38 +125,59 @@
         },
         methods: {
             initFetch() {
-                if (localStorage.getItem('userId')) {
-                    if (localStorage.getItem('userType') === 'leadership') {
-                        this.$router.push({name: 'assign-ticket'});
-                    } else {
-                    this.$router.push({name: 'add-ticket'});
-                }
-            }   
+                // Recuperar la cadena JSON del localStorage
+                console.log('initFetch');
+                const storedUserData = localStorage.getItem('userData');
+
+                // Verificar si storedUserData no es nulo
+                if (storedUserData) {
+                    console.log('storedUserData');
+                    // Convertir la cadena JSON a un objeto JavaScript
+                    const userData = JSON.parse(storedUserData);
+                    if (userData.tipoUsuario === '0') {
+                        this.$router.push({name: 'EmitirEgreso'});
+                    }
+                    if (userData.tipoUsuario === '1') {
+                        this.$router.push({name: 'GastosComunes'});
+                    }
+                    else {
+                        this.$router.push({name: 'login'});
+                    }
+                } 
             },
             async login() {
                 try {
                     const response = await axios.post(
-                        'http://localhost:5432/api/v1/login',
+                        'http://localhost:8080/api/v1/login',
                         {
                             rut: this.rut,
-                            contraseña: this.contrasena
+                            password: this.contrasena
                         }
                     );
                     console.log(response.data);
-                    //const responseStatus = response.data.substring(0, 7);
-                    //const userId = response.data.substring(7);
-//
-                    //localStorage.setItem('userId', userId)
-//
-                    //if (responseStatus === 'loggedC') {
-                    //    localStorage.setItem('userType', 'client')
-                    //    this.$router.push({name: 'add-ticket'})
-                    //}else if (responseStatus === 'loggedL'){
-                    //    localStorage.setItem('userType', 'leadership')
-                    //    this.$router.push({name: 'assign-ticket'});
-                    //}else{
-                    //    null
-                    //}
+                    response.data.rut = this.rut;
+                    console.log(response.data);
+
+
+                    // Convertir el objeto de datos a una cadena JSON
+                    const userData = JSON.stringify(response.data);
+
+                    // Almacenar en localStorage
+                    localStorage.setItem('userData', userData);
+                    
+                    console.log(response.data.tipoUsuario); // Debería imprimir el valor de tipoUsuario
+                    console.log(typeof response.data.tipoUsuario); // Debería imprimir el tipo de tipoUsuario
+
+                    if (response.data.tipoUsuario === 1) {
+                        console.log('Navegando a EmitirEgreso');
+                        this.$router.push({ name: 'EmitirEgreso' });
+                    } else if (response.data.tipoUsuario === 0) {
+                        console.log('Navegando a EmitirEgreso2');
+                        this.$router.push({ name: 'EmitirEgreso' });
+                    } else {
+                        console.log('Navegando a login');
+                        this.$router.push({ name: 'login' });
+                    }
 
                 } catch (error) {
                     console.error('A');
@@ -167,6 +186,7 @@
         },
         mounted() {
                 this.initFetch();
+                console.log('mounted');
             },
     };
 </script>
