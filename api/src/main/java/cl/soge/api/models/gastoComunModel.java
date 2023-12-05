@@ -13,11 +13,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SequenceGenerator(name = "gasto_comun_seq", sequenceName = "gasto_comun_seq", allocationSize = 1)
 @Table(name = "gasto_comun")
 public class gastoComunModel {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Esta línea ha sido modificada
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gasto_comun_seq") // Esta línea ha sido modificada
     @Column(name = "id_gasto", nullable = false, unique = true)
     private Integer idGasto;
 

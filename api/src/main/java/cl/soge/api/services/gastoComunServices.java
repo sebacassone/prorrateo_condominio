@@ -9,6 +9,9 @@ import cl.soge.api.repositories.gastoComunRepository;
 import cl.soge.api.repositories.usuarioRepository;
 import cl.soge.api.repositories.edificioRepository;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 @Service
 public class gastoComunServices {
 
@@ -21,8 +24,13 @@ public class gastoComunServices {
     @Autowired
     private edificioRepository edificioRepository;
 
-    public boolean registrarGastoComun(gastoComunModel gastoComun, Integer idEdificio, String idUsuario) {
+    public boolean registrarGastoComun(String descripcionGasto, Integer montoGasto, Date fechaEmision, Integer idEdificio, String idUsuario) {
         try {
+            gastoComunModel nuevoGasto = new gastoComunModel();
+            nuevoGasto.setDescripcion_gasto(descripcionGasto);
+            nuevoGasto.setMonto_gasto(montoGasto);
+            nuevoGasto.setFecha_emision(fechaEmision);
+            nuevoGasto.setFecha_registro(new Date());
             // Buscar el usuario y el edificio en la base de datos
             usuarioModel usuario = usuarioRepository.findById(idUsuario)
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + idUsuario));
@@ -30,11 +38,10 @@ public class gastoComunServices {
                     .orElseThrow(() -> new RuntimeException("Edificio no encontrado con ID: " + idEdificio));
 
             // Asociar el usuario y el edificio al gasto común
-            gastoComun.setUsuario(usuario);
-            gastoComun.setEdificio(edificio);
-
+            nuevoGasto.setUsuario(usuario);
+            nuevoGasto.setEdificio(edificio);
             // Guardar el gasto común en la base de datos
-            gastoComunRepository.save(gastoComun);
+            gastoComunRepository.save(nuevoGasto);
             return true;
         } catch (Exception e) {
             e.printStackTrace();
