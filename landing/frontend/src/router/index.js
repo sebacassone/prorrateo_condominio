@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import LoginFormView from "../views/LoginFormView.vue";
+import GastosComunesView from "../views/GastosComunesView.vue";
 import EgresoView from "../views/EgresoView.vue";
 
 const routes = [
@@ -11,6 +12,11 @@ const routes = [
       path: '/login',
       name: 'login',
       component: LoginFormView,
+  },
+  {
+    path: '/GastoComun',
+    name: 'GastoComun',
+    component: GastosComunesView,
   },
   {
     path: '/EmitirEgreso',
