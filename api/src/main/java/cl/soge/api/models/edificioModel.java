@@ -20,8 +20,8 @@ public class edificioModel {
     private String direccionEdificio;
     @Column(name = "tamaño_edificio")
     private Integer tamañoEdificio;
-    @Column(name = "cantidad_pisos")
-    private Integer cantidadPisos;
+    @Column(name = "cantidad_propiedades")
+    private Integer cantidadPropiedades;
     @Column(name = "cantidad_ingresos")
     private Integer CantidadIngresos;
     @Column(name = "cantidad_egresos")

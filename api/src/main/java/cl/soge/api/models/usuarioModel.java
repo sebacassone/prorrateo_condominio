@@ -19,7 +19,7 @@ public class usuarioModel {
     private String rut;
     private String nombre;
     private String apellido;
-    private Integer tipoUsuario; // 0, 1, 2, 3
+    private Integer tipoUsuario; // 0 = Admin, 1 = Residente, y 2 = Propietario
     private String correo;
     private String password;
 
@@ -39,6 +39,8 @@ public class usuarioModel {
             inverseJoinColumns = {@JoinColumn(name="numero_departamento")}
     )
     List<propiedadModel> propiedades;
+
+
 
     // La relación de muchos es a muchos de notificación no se escribe todavía por que no es necesario
     // para los requerimientos funcionales actuales.
