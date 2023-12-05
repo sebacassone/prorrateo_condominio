@@ -1,3 +1,7 @@
+const today = new Date().toISOString()
+console.log(today)
+
+console.log("33847389".isdigit)
 function formatLoginResponse(infoString) {
     // Eliminar los caracteres '{' y '}' y dividir por comas
     let partes = infoString.replace(/[{}]/g, '').split(', ');

@@ -9,43 +9,54 @@
     
     <v-container fluid>
       <v-row>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="6">
           <!-- Contenido del primer bloque -->
           <v-card
+            class="rounded-lg px-10 py-5 align-center text-center"
             title="Emitir Egreso"
-            subtitle="..."
-            text="..."
-            variant="tonal"
+            :text="saludo"
+            color="#0d2c24"
+            width="450"
+            :elevation="3"
+          
           >
           <v-form >
-                            <v-text-field
-                                v-model="rut"
-                                :rules="rutRules"
-                                :counter="10"
-                                label="RUT"
-                                variant="underlined"
-                                required
-                                placeholder="Sin puntos con guión"
-                                hint="Ejemplo: 12345678-k"
-                                
-                                
-                        
-                            ></v-text-field>
-                    
-                            <v-text-field
-                                v-model="contrasena"
-                                :rules="contraRules"
-                                label="Contraseña"
-                                variant="underlined"
-                                
-                                :type="show1 ? 'text' : 'password'"
-                                placeholder=""
-                                hint="Ingrese su contraseña para acceder al sistema"
-                                
-                            ></v-text-field>
-
-
-                        <v-card-actions class="justify-center">
+              <v-text-field
+                  v-model="monto"
+                  :rules="montoRules"
+                  label="Monto"
+                  variant="underlined"
+                  required
+                  placeholder="Ingrese solo valores numéricos"
+                  hint="Ejemplo: 123000"                      
+              ></v-text-field>
+              <v-text-field
+                  v-model="desc"
+                  required
+                  :counter="120"
+                  :rules="contraRules"
+                  label="Descripción"
+                  variant="underlined"
+                  placeholder="Ingresa una descripción"
+                  hint="Máximo 120 caracteres"                      
+              ></v-text-field>
+              <v-text-field
+                  v-model="date"
+                  :rules="contraRules"
+                  label="Fecha"
+                  variant="underlined"
+                  required
+                  placeholder="Selecciona fecha desde el calendario"
+                  hint="Ejemplo: 123000"                      
+                  ></v-text-field>
+              <v-autocomplete
+                  v-model="categoria"
+                  label="Categoría"
+                  :items="lista_categorias"
+                  variant="underlined"
+                  placeholder="Selecciona el tipo de gasto"
+              ></v-autocomplete>
+              <v-card-actions class="justify-center">
                             <div class="btn-container">
                                 <v-btn
                                     class="rounded-lg text-white px-5"
@@ -55,18 +66,32 @@
                                     variant="outlined"
                                 >
                                     <div class="text-h font-weight-medium text-white">
-                                    Ingresar
+                                    Emitir Egreso
                                     </div>
                                 </v-btn>
                             </div>
                         </v-card-actions>
-                </v-form>
+
+            </v-form>
         </v-card>
         
         </v-col>
         <v-divider color="warning" vertical></v-divider>
         <v-col cols="12" md="6">
           <!-- Contenido del segundo bloque -->
+          <v-card
+            variant="tonal"
+            color="#000000"
+          > 
+            <v-date-picker
+                v-model="date"
+                required
+                title="Seleccione fecha de emisión"
+                show-adjacent-months
+                :max="today"
+                color=red>
+            </v-date-picker>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
@@ -97,33 +122,38 @@
 
 <script>
     import axios from 'axios';
-    import {validarRUT} from '../validationUtils.js';
+    import {validarRUT,formatoNumerico} from '../validationUtils.js';
 
     export default {
         data: () => ({
             rut: '',
-            contrasena: '',
-            visible: false,
-            show1: true,
+            today: new Date().toISOString(),
+            date: null,
+            saludo: 'SALUDO A INGRESAR',
+            monto: '',
+            desc: '',
+            categoria: '',
+            lista_categorias: ['Reparacion', 'Egresos', 'Insumos', 'Sueldos', 'Servicios Básicos', 'Bonos','Otros'],
+            contrasena: '', //borrar
             loading: false,
             form: false,
-            rutRules: [
+            montoRules: [
                 value => {
                     if (value) return true
 
-                    return 'Falta ingresar el RUT.'
+                    return 'Monto es requerido.'
                 },
                 value => {
-                    if (validarRUT(value)) return true
+                    if (formatoNumerico(value)) return true
                     
-                    return 'RUT inválido.'
+                    return 'No ingrese caracteres especiales !"#$%&.,;:/()="'
                 },
             ],
             contraRules: [
                 value => {
                     if (value) return true
 
-                    return 'Falta ingresar la contraseña.'
+                    return 'Rellenar campo.'
                 },
             ],
         }),
@@ -133,12 +163,14 @@
                 // Recuperar la cadena JSON del localStorage
                 console.log('initFetch');
                 const storedUserData = localStorage.getItem('userData');
+                const userData = JSON.parse(storedUserData);
+                this.saludo = 'Hola '+storedUserData.nombre + '! Ingresa los datos del egreso.';
 
                 // Verificar si storedUserData no es nulo
                 if (storedUserData) {
                     console.log('storedUserData');
                     // Convertir la cadena JSON a un objeto JavaScript
-                    const userData = JSON.parse(storedUserData);
+                    
                     if (userData.tipoUsuario === '0') {
                         this.$router.push({name: 'EmitirEgreso'});
                     }

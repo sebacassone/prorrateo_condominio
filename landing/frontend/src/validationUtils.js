@@ -56,6 +56,7 @@ export function validarRUT(rut) {
     return true;
   }
 
+ 
 export function formatLoginResponse(infoString) {
     // Eliminar los caracteres '{' y '}' y dividir por comas
     let partes = infoString.replace(/[{}]/g, '').split(', ');
@@ -71,5 +72,6 @@ export function formatLoginResponse(infoString) {
     return datos;
  }
 
- 20127313-8
- 
+export function formatoNumerico(cadena) {
+  return /^[0-9]+$/.test(cadena);
+}

@@ -145,7 +145,7 @@
                 // Recuperar la cadena JSON del localStorage
                 console.log('initFetch');
                 const storedUserData = localStorage.getItem('userData');
-
+                
                 // Verificar si storedUserData no es nulo
                 if (storedUserData) {
                     console.log('storedUserData');
