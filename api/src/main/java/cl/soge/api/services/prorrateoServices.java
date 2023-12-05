@@ -74,8 +74,14 @@ public class prorrateoServices {
             // Se obtiene la propiedad
             propiedadModel propiedad = propiedadRepository.findById(numeroDepto)
                     .orElseThrow(() -> new RuntimeException("Departamento no encontrado con ID: " + numeroDepto));
+            // Extraer el mes y el año de la fecha
+            Integer mesInt = Integer.parseInt(fecha.split("-")[1]);
+            Integer añoInt = Integer.parseInt(fecha.split("-")[0]);
             // Se obtiene los m2 del departamento, m2 del edificio, y gastos comunes del edificio. Luego se calcula el monto del prorrateo
-            Integer prorrateoMonto = calcularMontoProrrateo(gastoComunRepository.obtenerDatosParaProrrateo(numeroDepto, idEdificio));
+            Integer prorrateoMonto = calcularMontoProrrateo(gastoComunRepository.obtenerDatosParaProrrateo(numeroDepto, idEdificio, mesInt, añoInt));
+            if (prorrateoMonto == null) {
+                return null;
+            }
             // Se crea un nuevo prorrateo
             prorrateoModel prorrateo = new prorrateoModel();
             prorrateo.setPropiedad(propiedad);
@@ -103,6 +109,9 @@ public class prorrateoServices {
             if (prorrateoMonto == null) {
                 // Se crea un nuevo prorrateo
                 prorrateoMonto = crearProrrateo(idEdificio, numeroDepto, fecha);
+                if (prorrateoMonto == null) {
+                    return null;
+                }
             }
             // Se retorna el prorrateo
             // Se deja un HashMap para que se pueda agregar más información en el futuro
