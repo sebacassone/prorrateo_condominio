@@ -16,11 +16,11 @@ public class prorrateoController {
     @Autowired
     private prorrateoServices prorrateoServices;
 
-    @GetMapping("/prorrateo/{id_edificio}/{numero_depto}/{fecha}")
-    public ResponseEntity<Integer> prorrateo(@PathVariable("id_edificio") int id_edificio, @PathVariable("numero_depto") int numero_depto, @PathVariable("mes") String mes) {
+    @GetMapping("/prorrateo/{id_edificio}/{numero_depto}/{mes}")
+    public ResponseEntity<Map<String, Object>> prorrateo(@PathVariable("id_edificio") int id_edificio, @PathVariable("numero_depto") int numero_depto, @PathVariable("mes") String mes) {
         try {
             // Formato de fecha: YYYY-MM
-            Integer prorrateo = prorrateoServices.prorrateo(id_edificio, numero_depto, mes);
+            Map<String, Object> prorrateo = prorrateoServices.prorrateo(id_edificio, numero_depto, mes);
             if (prorrateo != null) {
                 return ResponseEntity.ok(prorrateo);
             } else {

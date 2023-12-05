@@ -26,10 +26,10 @@ public class gastoComunServices {
     public boolean registrarGastoComun(String descripcionGasto, Integer montoGasto, Date fechaEmision, Integer idEdificio, String idUsuario) {
         try {
             gastoComunModel nuevoGasto = new gastoComunModel();
-            nuevoGasto.setDescripcion_gasto(descripcionGasto);
-            nuevoGasto.setMonto_gasto(montoGasto);
-            nuevoGasto.setFecha_emision(fechaEmision);
-            nuevoGasto.setFecha_registro(new Date());
+            nuevoGasto.setDescripcionGasto(descripcionGasto);
+            nuevoGasto.setMontoGasto(montoGasto);
+            nuevoGasto.setFechaEmision(fechaEmision);
+            nuevoGasto.setFechaRegistro(new Date());
             // Buscar el usuario y el edificio en la base de datos
             usuarioModel usuario = usuarioRepository.findById(idUsuario)
                     .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + idUsuario));

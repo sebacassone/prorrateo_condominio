@@ -10,8 +10,7 @@ import cl.soge.api.repositories.prorrateoRepository;
 import cl.soge.api.repositories.gastoComunRepository;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class prorrateoServices {
@@ -37,9 +36,7 @@ public class prorrateoServices {
                 return false;
             }
             // Si el año es valido (2021-9999)
-            // Año actual
-            int añoActual = Calendar.getInstance().get(Calendar.YEAR);
-            if (añoInt < 1900 || añoInt > añoActual) {
+            if (añoInt < 1900 || añoInt > 2099) {
                 return false;
             }
             return true;
@@ -49,15 +46,20 @@ public class prorrateoServices {
         }
     }
 
-    private Integer calcularMontoProrrateo(Object[] datos) {
+    private Integer calcularMontoProrrateo(List<Object[]> datos) {
         try {
-            // Se obtienen los datos
-            Integer gastosComunes = (Integer) datos[0];
-            Integer metrosCuadradosDepartamento = (Integer) datos[1];
-            Integer metrosCuadradosEdificio = (Integer) datos[2];
+            if (datos == null || datos.isEmpty()) {
+                return null;
+            }
+            // Se obtiene los m2 del departamento, m2 del edificio, y gastos comunes del edificio
+            Integer metrosCuadradosDepartamentoInt = (Integer) datos.get(0)[1];
+            Integer metrosCuadradosEdificioInt = (Integer) datos.get(0)[2];
+            Long gastosComunes = (Long) datos.get(0)[0];
+            // Se transforma el gasto común a int
+            Integer gastosComunesInt = gastosComunes.intValue();
+
             // Se calcula el monto del prorrateo
-            Integer montoProrrateo = (metrosCuadradosDepartamento * gastosComunes) / metrosCuadradosEdificio;
-            return montoProrrateo;
+            return (metrosCuadradosDepartamentoInt * gastosComunesInt) / metrosCuadradosEdificioInt;
         } catch (Exception error) {
             error.printStackTrace();
             return null;
@@ -87,7 +89,7 @@ public class prorrateoServices {
         }
     }
 
-    public Integer prorrateo(Integer idEdificio, Integer numeroDepto, String fecha) {
+    public Map<String, Object> prorrateo(Integer idEdificio, Integer numeroDepto, String fecha) {
         try {
             if (!validarFecha(fecha)) {
                 return null;
@@ -103,7 +105,13 @@ public class prorrateoServices {
                 prorrateoMonto = crearProrrateo(idEdificio, numeroDepto, fecha);
             }
             // Se retorna el prorrateo
-            return prorrateoMonto;
+            // Se deja un HashMap para que se pueda agregar más información en el futuro
+            Map<String, Object> respuesta = new HashMap<>();
+            respuesta.put("montoProrrateo", prorrateoMonto);
+            respuesta.put("fecha", fecha);
+            respuesta.put("idEdificio", idEdificio);
+            respuesta.put("numeroDepto", numeroDepto);
+            return respuesta;
         } catch (Exception error) {
             error.printStackTrace();
             return null;

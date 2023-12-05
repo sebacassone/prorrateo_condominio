@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface prorrateoRepository extends JpaRepository<prorrateoModel, Integer> {
     @Query(value =
-            "SELECT p.monto FROM prorrateo p" +
-                    "WHERE EXTRACT(MONTH FROM p.fecha_columna) = :mes AND EXTRACT(YEAR FROM p.fecha_columna) = :año" +
+            "SELECT p.monto_prorrateo FROM prorrateo p " +
+                    "WHERE EXTRACT(MONTH FROM p.mes_año_prorrateo) = :mes AND EXTRACT(YEAR FROM p.mes_año_prorrateo) = :año " +
                     "AND p.numero_departamento = :numero_depto"
             , nativeQuery = true)
     Integer verificarProrrateoMes(@Param("numero_depto") Integer numero_depto, @Param("mes") Integer mes, @Param("año") Integer año);
