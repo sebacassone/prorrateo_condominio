@@ -205,14 +205,14 @@
         methods: {
             initFetch() {
                 // Recuperar la cadena JSON del localStorage
-                console.log('initFetch');
+                console.log('initFetch_egreso');
                 const storedUserData = localStorage.getItem('userData');
                 const userData = JSON.parse(storedUserData);
                 this.saludo = 'Hola '+storedUserData.nombre + '! Ingresa los datos del egreso.';
 
                 // Verificar si storedUserData no es nulo
                 if (storedUserData) {
-                    console.log('storedUserData');
+                    console.log('storedUserData_Egreso');
                     // Convertir la cadena JSON a un objeto JavaScript
                     
                     if (userData.tipoUsuario === '0') {
@@ -230,30 +230,42 @@
             },
             async sendEgresoForm() {
                 try {
-                    const response = await axios.put(
-                        'http://localhost:8080/api/v1/',
-                        {
-                            id_usuario: localStorage.getItem('userData').rut,
-                            descripcion_gasto: this.desc,
-                            fecha_emision: this.date,
-                            monto_gasto: this.monto,
-                            
-                        }
-                    );
-                    console.log(response.data);
-                    console.log(localStorage.getItem('userData').rut);
+                    console.log('sendEgresoForm');
+                    //const userData = JSON.parse(storedUserData);
+                    //console.log(userData.rut);
+                    // Obtener la cadena JSON del localStorage
+                    const storedUserData = localStorage.getItem('userData');
+
+                    // Convertir la cadena JSON a un objeto JavaScript
+                    const userData = JSON.parse(storedUserData);
+
+                    // Acceder a la propiedad 'rut' del objeto
+                    const userRut = userData.rut;
                     console.log(this.desc);
                     console.log(this.date);
                     console.log(this.monto);
-
+                    
+                    const response = await axios.post(
+                        'http://localhost:8080/api/v1/registroGastoComun',
+                        {
+                            descripcion_gasto: this.desc,
+                            monto_gasto: parseInt(this.monto),
+                            fecha_emision: this.date,
+                            id_usuario: userRut.replace('-',''),
+                            id_edificio: 1,
+                            nombre_categoria: this.categoria
+                            
+                        }
+                    );
                 } catch (error) {
-                    console.error('Error al enviar forms de egreso', error);
+                    console.log('B');
+                    
                 }
             }
         },
         mounted() {
                 this.initFetch();
-                console.log('mounted');
+                console.log('mounted_egreso');
             },
     };
 </script>
