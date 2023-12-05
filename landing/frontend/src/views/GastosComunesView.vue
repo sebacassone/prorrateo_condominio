@@ -118,7 +118,7 @@
 
 
 
-<style scoped>
+<style>
     
 
 #Titulo{
