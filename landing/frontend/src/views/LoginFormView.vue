@@ -142,25 +142,13 @@
         },
         methods: {
             initFetch() {
-                // Recuperar la cadena JSON del localStorage
-                console.log('initFetch');
-                const storedUserData = localStorage.getItem('userData');
-
-                // Verificar si storedUserData no es nulo
-                if (storedUserData) {
-                    console.log('storedUserData');
-                    // Convertir la cadena JSON a un objeto JavaScript
-                    const userData = JSON.parse(storedUserData);
-                    if (userData.tipoUsuario === '0') {
-                        this.$router.push({name: 'EmitirEgreso'});
-                    }
-                    if (userData.tipoUsuario === '1') {
-                        this.$router.push({name: 'GastosComunes'});
-                    }
-                    else {
-                        this.$router.push({name: 'login'});
-                    }
-                } 
+                if (localStorage.getItem('userId')) {
+                    if (localStorage.getItem('userType') === 'leadership') {
+                        this.$router.push({name: 'assign-ticket'});
+                    } else {
+                    this.$router.push({name: 'add-ticket'});
+                }
+            }   
             },
             async login() {
                 try {
