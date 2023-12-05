@@ -17,45 +17,53 @@ public class usuarioServices {
     @Autowired
     usuarioRepository usuarioRepository;
 
-    public Map<String, Object> infoUsuario(String rut, String password) {
-        List<Object[]> resultados = usuarioRepository.buscarPropiedadesPorUsuario(rut, password);
+    public Map<String, Object> obtenerInformacionUsuario(String rut, String password) {
+        List<Object[]> resultadosPropiedades = usuarioRepository.buscarPropiedadesPorUsuario(rut, password);
 
-        if (resultados != null && !resultados.isEmpty()) {
-            Map<String, Object> respuesta = new HashMap<>();
-            List<Integer> idsPropiedades = new ArrayList<>();
-
-            /* Se debe modificar a futuro, no puede asumir que es solo un edificio */
-            // Asumiendo que hay solo un edificio, se toma el id del edificio de la primera fila
-            Integer idEdificio = (Integer) resultados.get(0)[0]; // Cambiar el índice si es necesario
-
-            // Iterar sobre cada fila de resultados y recopilar la información de las propiedades
-            for (Object[] fila : resultados) {
-                idsPropiedades.add((Integer) fila[1]); // Cambiar el índice si es necesario
-            }
-
-            // Asumiendo que el nombre y tipo de usuario son iguales para todas las filas
-            respuesta.put("nombre", resultados.get(0)[2]); // Cambiar el índice si es necesario
-            respuesta.put("apellido", resultados.get(0)[3]); // Cambiar el índice si es necesario
-            respuesta.put("tipoUsuario", resultados.get(0)[4]); // Cambiar el índice si es necesario
-            respuesta.put("idEdificio", idEdificio);
-            respuesta.put("idPropiedades", idsPropiedades);
-
-            return respuesta;
+        if (resultadosPropiedades != null && !resultadosPropiedades.isEmpty()) {
+            return construirRespuesta(resultadosPropiedades);
         } else {
-            resultados = usuarioRepository.buscarUsuario(rut, password);
-            if (resultados != null && !resultados.isEmpty()) {
-                Map<String, Object> respuesta = new HashMap<>();
+            List<Object[]> resultadosUsuario = usuarioRepository.buscarUsuario(rut, password);
 
-                respuesta.put("nombre", resultados.get(0)[0]); // Cambiar el índice si es necesario
-                respuesta.put("apellido", resultados.get(0)[1]); // Cambiar el índice si es necesario
-                respuesta.put("tipoUsuario", resultados.get(0)[2]); // Cambiar el índice si es necesario
-                respuesta.put("idEdificio", null);
-                respuesta.put("idPropiedades", null);
-
-                return respuesta;
+            if (resultadosUsuario != null && !resultadosUsuario.isEmpty()) {
+                return construirRespuestaUsuario(resultadosUsuario);
             } else {
                 return null;
             }
         }
+    }
+
+    private Map<String, Object> construirRespuesta(List<Object[]> resultados) {
+        Map<String, Object> respuesta = new HashMap<>();
+        List<Integer> idsPropiedades = new ArrayList<>();
+
+        // Asumiendo que hay solo un edificio, se toma el id del edificio de la primera fila
+        Integer idEdificio = (Integer) resultados.get(0)[0]; // Cambiar el índice si es necesario
+
+        // Iterar sobre cada fila de resultados y recopilar la información de las propiedades
+        for (Object[] fila : resultados) {
+            idsPropiedades.add((Integer) fila[1]); // Cambiar el índice si es necesario
+        }
+
+        // Asumiendo que el nombre y tipo de usuario son iguales para todas las filas
+        respuesta.put("nombre", resultados.get(0)[2]); // Cambiar el índice si es necesario
+        respuesta.put("apellido", resultados.get(0)[3]); // Cambiar el índice si es necesario
+        respuesta.put("tipoUsuario", resultados.get(0)[4]); // Cambiar el índice si es necesario
+        respuesta.put("idEdificio", idEdificio);
+        respuesta.put("idPropiedades", idsPropiedades);
+
+        return respuesta;
+    }
+
+    private Map<String, Object> construirRespuestaUsuario(List<Object[]> resultados) {
+        Map<String, Object> respuesta = new HashMap<>();
+
+        respuesta.put("nombre", resultados.get(0)[0]); // Cambiar el índice si es necesario
+        respuesta.put("apellido", resultados.get(0)[1]); // Cambiar el índice si es necesario
+        respuesta.put("tipoUsuario", resultados.get(0)[2]); // Cambiar el índice si es necesario
+        respuesta.put("idEdificio", null);
+        respuesta.put("idPropiedades", null);
+
+        return respuesta;
     }
 }
