@@ -13,9 +13,9 @@ import cl.soge.api.services.gastoComunServices;
 import java.text.SimpleDateFormat;
 import java.util.Map;
 
-@Controller
-@RequestMapping("/api/v1")
+
 @RestController
+@RequestMapping("/api/v1")
 public class gastoComunController {
 
     @Autowired

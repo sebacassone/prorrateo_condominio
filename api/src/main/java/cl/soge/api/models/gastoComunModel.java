@@ -22,10 +22,10 @@ public class gastoComunModel {
     @Column(name = "id_gasto", nullable = false, unique = true)
     private Integer idGasto;
 
-    private String descripcion_gasto;
-    private Integer monto_gasto;
-    private Date fecha_emision;
-    private Date fecha_registro;
+    private String descripcionGasto;
+    private Integer montoGasto;
+    private Date fechaEmision;
+    private Date fechaRegistro;
 
     @JsonIgnore
     @ManyToOne

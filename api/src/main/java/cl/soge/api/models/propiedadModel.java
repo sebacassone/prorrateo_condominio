@@ -18,9 +18,9 @@ public class propiedadModel {
 
     @Id
     @Column(nullable = false, unique = true)
-    private Integer numero_departamento;
+    private Integer numeroDepartamento;
 
-    private Integer tamaño_inmueble;
+    private Integer tamañoInmueble;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "propiedades")
@@ -35,9 +35,4 @@ public class propiedadModel {
     @ManyToOne
     @JoinColumn(name = "id_edificio")
     private edificioModel edificio;
-
-    @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "id_prorrateo")
-    private prorrateoModel prorrateo;
 }
