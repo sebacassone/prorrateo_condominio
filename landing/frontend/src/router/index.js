@@ -6,7 +6,7 @@ import EgresoView from "../views/EgresoView.vue";
 const routes = [
   {
       path: '/',
-      redirect: '/EmitirEgreso',
+      redirect: '/login',
   },
   {
       path: '/login',

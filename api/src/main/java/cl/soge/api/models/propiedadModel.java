@@ -17,14 +17,14 @@ import java.util.List;
 public class propiedadModel {
 
     @Id
-    @Column(name = "id_propiedad", nullable = false, unique = true)
-    private Integer numero_departamento;
+    @Column(nullable = false, unique = true)
+    private Integer numeroDepartamento;
 
-    private Integer tamaño_inmueble;
+    private Integer tamañoInmueble;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario")
-    private usuarioModel usuario;
+    @JsonIgnore
+    @ManyToMany(mappedBy = "propiedades")
+    private List<usuarioModel> usuarios;
 
     @JsonIgnore
     @OneToOne
@@ -35,9 +35,4 @@ public class propiedadModel {
     @ManyToOne
     @JoinColumn(name = "id_edificio")
     private edificioModel edificio;
-
-    @JsonIgnore
-    @OneToOne
-    @JoinColumn(name = "id_prorrateo")
-    private prorrateoModel prorrateo;
 }

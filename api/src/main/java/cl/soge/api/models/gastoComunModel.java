@@ -13,15 +13,19 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SequenceGenerator(name = "gasto_comun_seq", sequenceName = "gasto_comun_seq", allocationSize = 1)
 @Table(name = "gasto_comun")
 public class gastoComunModel {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gasto_comun_seq") // Esta línea ha sido modificada
     @Column(name = "id_gasto", nullable = false, unique = true)
     private Integer idGasto;
-    private String descripcion_gasto;
-    private Integer monto_gasto;
-    private Date fecha_emision;
-    private Date fecha_registro;
+
+    private String descripcionGasto;
+    private Integer montoGasto;
+    private Date fechaEmision;
+    private Date fechaRegistro;
 
     @JsonIgnore
     @ManyToOne
@@ -44,4 +48,5 @@ public class gastoComunModel {
             inverseJoinColumns = {@JoinColumn(name="id_categoria")}
     )
     private List<categoriaModel> categorias;
+
 }

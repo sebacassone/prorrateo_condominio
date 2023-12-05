@@ -27,6 +27,7 @@
                                 v-model="rut"
                                 :rules="rutRules"
                                 :counter="10"
+                                maxlength="10"
                                 label="RUT"
                                 variant="underlined"
                                 required
@@ -142,26 +143,41 @@
         },
         methods: {
             initFetch() {
-                if (localStorage.getItem('userId')) {
-                    if (localStorage.getItem('userType') === 'leadership') {
-                        this.$router.push({name: 'assign-ticket'});
-                    } else {
-                    this.$router.push({name: 'add-ticket'});
-                }
-            }   
+                // Recuperar la cadena JSON del localStorage
+                console.log('initFetch');
+                const storedUserData = localStorage.getItem('userData');
+                // Convertir la cadena JSON a un objeto JavaScript
+                const userData = JSON.parse(storedUserData);
+
+                // Verificar si storedUserData no es nulo
+                if (storedUserData) {
+                    console.log('storedUserData');
+                    
+                    if (userData.tipoUsuario === '0') {
+                        this.$router.push({name: 'EmitirEgreso'});
+                    }
+                    if (userData.tipoUsuario === '1') {
+                        this.$router.push({name: 'GastosComunes'});
+                    }
+                    else {
+                        this.$router.push({name: 'login'});
+                    }
+                } 
             },
             async login() {
                 try {
                     const response = await axios.post(
                         'http://localhost:8080/api/v1/login',
                         {
-                            rut: this.rut,
+                            rut: this.rut.replace('-',''),
                             password: this.contrasena
                         }
                     );
                     console.log(response.data);
-                    response.data.rut = this.rut;
+                    response.data.rut = this.rut.replace('-','');
                     console.log(response.data);
+                    console.log(response.data.tipoUsuario);
+                    console.log(response.data.idEdificio);
 
 
                     // Convertir el objeto de datos a una cadena JSON
@@ -173,15 +189,12 @@
                     console.log(response.data.tipoUsuario); // Debería imprimir el valor de tipoUsuario
                     console.log(typeof response.data.tipoUsuario); // Debería imprimir el tipo de tipoUsuario
 
-                    if (response.data.tipoUsuario === 1) {
+                    if (response.data.tipoUsuario === 0) {
+                        console.log('Navegando a EmitirEgreso2');
+                        this.$router.push({ name: 'GastoComun' });
+                    } else {
                         console.log('Navegando a EmitirEgreso');
                         this.$router.push({ name: 'EmitirEgreso' });
-                    } else if (response.data.tipoUsuario === 0) {
-                        console.log('Navegando a EmitirEgreso2');
-                        this.$router.push({ name: 'EmitirEgreso' });
-                    } else {
-                        console.log('Navegando a login');
-                        this.$router.push({ name: 'login' });
                     }
 
                 } catch (error) {

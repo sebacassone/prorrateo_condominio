@@ -144,7 +144,7 @@
 
 
 
-<style scoped>
+<style>
     
 
 #Titulo{
