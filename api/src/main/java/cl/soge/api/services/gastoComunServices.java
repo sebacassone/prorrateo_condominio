@@ -9,7 +9,6 @@ import cl.soge.api.repositories.gastoComunRepository;
 import cl.soge.api.repositories.usuarioRepository;
 import cl.soge.api.repositories.edificioRepository;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service

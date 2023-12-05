@@ -1,6 +1,5 @@
 package cl.soge.api.controllers;
 
-import cl.soge.api.models.edificioModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,12 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import cl.soge.api.models.gastoComunModel;
 import cl.soge.api.services.gastoComunServices;
-import  cl.soge.api.services.usuarioServices;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 @Controller
@@ -24,7 +20,6 @@ public class gastoComunController {
 
     @Autowired
     gastoComunServices gastoComunServices;
-    usuarioServices usuarioServices;
 
     @PostMapping("/registroGastoComun")
     public ResponseEntity<Map<String, String>> registroGastoComun(@RequestBody Map<String, Object> jsonMap) {
