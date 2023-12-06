@@ -12,8 +12,14 @@ import java.util.List;
 public interface prorrateoRepository extends JpaRepository<prorrateoModel, Integer> {
     @Query(value =
             "SELECT p.monto_prorrateo, p.fecha_vencimiento, p.mes_año_prorrateo FROM prorrateo p " +
+                    "INNER JOIN propiedad prop ON prop.numero_departamento = p.numero_departamento " +
                     "WHERE EXTRACT(MONTH FROM p.mes_año_prorrateo) = :mes AND EXTRACT(YEAR FROM p.mes_año_prorrateo) = :año " +
-                    "AND p.numero_departamento = :numero_depto"
+                    "AND p.numero_departamento = :numero_depto AND prop.id_edificio = :id_edificio"
             , nativeQuery = true)
-    List<Object[]> verificarProrrateoMes(@Param("numero_depto") Integer numero_depto, @Param("mes") Integer mes, @Param("año") Integer año);
+    List<Object[]> verificarProrrateoMes(
+            @Param("numero_depto") Integer numero_depto,
+            @Param("mes") Integer mes,
+            @Param("año") Integer año,
+            @Param("id_edificio") Integer id_edificio
+    );
 }

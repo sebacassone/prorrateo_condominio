@@ -126,7 +126,7 @@ public class prorrateoServices {
             Integer mesInt = Integer.parseInt(fecha.split("-")[1]);
             Integer añoInt = Integer.parseInt(fecha.split("-")[0]);
             // Se hace la consulta a la base de datos para verificar si existe un prorrateo para el mes y año indicado
-            List<Object[]> prorrateo = prorrateoRepository.verificarProrrateoMes(numeroDepto, mesInt, añoInt);
+            List<Object[]> prorrateo = prorrateoRepository.verificarProrrateoMes(numeroDepto, mesInt, añoInt, idEdificio);
 
             // Si no existe un prorrateo para el mes y año indicado
             if (prorrateo == null || prorrateo.isEmpty()) {
