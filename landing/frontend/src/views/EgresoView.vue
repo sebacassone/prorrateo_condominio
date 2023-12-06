@@ -272,8 +272,9 @@
               
             
         },
-        mounted() { 
+        mounted() {
             console.log('mounted_egreso');
+            //this.checkUserTypeAndRedirect();
             this.initFetch();
         },
     };

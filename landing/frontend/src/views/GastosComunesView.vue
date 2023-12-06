@@ -301,7 +301,7 @@ a:hover{
             loading: false,
             lista_deptos: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15'],
             depto: '',
-            nombre_user: "Felipe Pinky",
+            nombre_user: "Nombre User",
             monto: '',
             mes:'',
             año:'',
@@ -309,9 +309,9 @@ a:hover{
         }),
 
         methods:{
+    
             initFetch() {
             // Obtener el objeto de usuario de localStorage
-                console.log('initFetch_gastos');
                 const storedUserDataJSON = localStorage.getItem('userData');
                 if (storedUserDataJSON) {
                   // Convertir la cadena JSON a un objeto
@@ -353,20 +353,22 @@ a:hover{
                         'http://localhost:8080/api/v1/prorrateo/1/'+this.depto + '/' + this.año + '-' + this.mes);
                     console.log(response.data);
                     this.monto = response.data.montoProrrateo;
+
                     this.Fecha_vencimiento = response.data.fecha;
                     console.log(this.Fecha_vencimiento)
+
                 }
                 catch(error){
                     console.log(error);
                 }
 
-            },
-            
+            }
         },
         mounted() {
-            console.log('mounted_gastos');
+            console.log('mounted_gasto');
+            //this.checkUserTypeAndRedirect();
             this.initFetch();
-        },
+        }
     }
 
 
