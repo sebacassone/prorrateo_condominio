@@ -9,6 +9,7 @@ import cl.soge.api.repositories.propiedadRepository;
 import cl.soge.api.repositories.prorrateoRepository;
 import cl.soge.api.repositories.gastoComunRepository;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -66,11 +67,26 @@ public class prorrateoServices {
         }
     }
 
-    private Integer crearProrrateo(Integer idEdificio, Integer numeroDepto, String fecha) {
+    private Date fechaVencimiento(Date fechaDate, String fecha) throws ParseException {
+        // Convierte la fecha a un objeto Calendar
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fechaDate);
+        // Obtén el último día del mes
+        Integer ultimoDiaDelMes = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        Date fechaVencimiento = formato.parse(fecha + "-" + ultimoDiaDelMes);
+        return fechaVencimiento;
+    }
+
+    private List<Object[]> crearProrrateo(Integer idEdificio, Integer numeroDepto, String fecha) {
         try {
             // Se transforma un string a fecha
             SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
             Date fechaDate = formato.parse(fecha + "-01");
+
+            // Se calcula la fecha de vencimiento
+            Date fechaVencimiento = fechaVencimiento(fechaDate, fecha);
+
             // Se obtiene la propiedad
             propiedadModel propiedad = propiedadRepository.findById(numeroDepto)
                     .orElseThrow(() -> new RuntimeException("Departamento no encontrado con ID: " + numeroDepto));
@@ -85,10 +101,16 @@ public class prorrateoServices {
             // Se crea un nuevo prorrateo
             prorrateoModel prorrateo = new prorrateoModel();
             prorrateo.setPropiedad(propiedad);
+            prorrateo.setCriterioProrrateo("M2");
             prorrateo.setMesAñoProrrateo(fechaDate);
             prorrateo.setMontoProrrateo(prorrateoMonto);
+            prorrateo.setFechaVencimiento(fechaVencimiento);
             prorrateoRepository.save(prorrateo);
-            return prorrateoMonto;
+
+            // Se mete el monto y la fecha de vencimiento en una lista de objetos
+            List<Object[]> prorrateoObjeto = new ArrayList<>();
+            prorrateoObjeto.add(new Object[]{prorrateoMonto, fechaVencimiento, fechaDate});
+            return prorrateoObjeto;
         } catch (Exception error) {
             error.printStackTrace();
             return null;
@@ -104,22 +126,24 @@ public class prorrateoServices {
             Integer mesInt = Integer.parseInt(fecha.split("-")[1]);
             Integer añoInt = Integer.parseInt(fecha.split("-")[0]);
             // Se hace la consulta a la base de datos para verificar si existe un prorrateo para el mes y año indicado
-            Integer prorrateoMonto = prorrateoRepository.verificarProrrateoMes(numeroDepto, mesInt, añoInt);
+            List<Object[]> prorrateo = prorrateoRepository.verificarProrrateoMes(numeroDepto, mesInt, añoInt);
+
             // Si no existe un prorrateo para el mes y año indicado
-            if (prorrateoMonto == null) {
+            if (prorrateo == null || prorrateo.isEmpty()) {
                 // Se crea un nuevo prorrateo
-                prorrateoMonto = crearProrrateo(idEdificio, numeroDepto, fecha);
-                if (prorrateoMonto == null) {
+                prorrateo = crearProrrateo(idEdificio, numeroDepto, fecha);
+                if (prorrateo == null) {
                     return null;
                 }
             }
             // Se retorna el prorrateo
             // Se deja un HashMap para que se pueda agregar más información en el futuro
             Map<String, Object> respuesta = new HashMap<>();
-            respuesta.put("montoProrrateo", prorrateoMonto);
-            respuesta.put("fecha", fecha);
+            respuesta.put("montoProrrateo", prorrateo.get(0)[0]);
+            respuesta.put("fecha", prorrateo.get(0)[2]);
             respuesta.put("idEdificio", idEdificio);
             respuesta.put("numeroDepto", numeroDepto);
+            respuesta.put("fechaVencimiento", prorrateo.get(0)[1]);
             return respuesta;
         } catch (Exception error) {
             error.printStackTrace();
