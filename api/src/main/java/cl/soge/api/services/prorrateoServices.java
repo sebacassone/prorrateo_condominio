@@ -3,6 +3,7 @@ package cl.soge.api.services;
 import cl.soge.api.models.propiedadModel;
 import cl.soge.api.models.prorrateoModel;
 import cl.soge.api.models.edificioModel;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import cl.soge.api.repositories.propiedadRepository;
@@ -56,11 +57,15 @@ public class prorrateoServices {
             Integer metrosCuadradosDepartamentoInt = (Integer) datos.get(0)[1];
             Integer metrosCuadradosEdificioInt = (Integer) datos.get(0)[2];
             Long gastosComunes = (Long) datos.get(0)[0];
-            // Se transforma el gasto común a int
-            Integer gastosComunesInt = gastosComunes.intValue();
+
+            // Utilizar números de punto flotante para la división
+            double resultado = (double) (metrosCuadradosDepartamentoInt.longValue() * gastosComunes) / metrosCuadradosEdificioInt.longValue();
+
+            // Redondear el resultado al entero más cercano
+            int resultadoRedondeado = (int) Math.round(resultado);
 
             // Se calcula el monto del prorrateo
-            return (metrosCuadradosDepartamentoInt * gastosComunesInt) / metrosCuadradosEdificioInt;
+            return resultadoRedondeado;
         } catch (Exception error) {
             error.printStackTrace();
             return null;
@@ -134,6 +139,16 @@ public class prorrateoServices {
                 prorrateo = crearProrrateo(idEdificio, numeroDepto, fecha);
                 if (prorrateo == null) {
                     return null;
+                }
+            } else {
+                Integer prorrateoMonto = calcularMontoProrrateo(gastoComunRepository.obtenerDatosParaProrrateo(numeroDepto, idEdificio, mesInt, añoInt));
+                if (prorrateoMonto == null) {
+                    return null;
+                }
+                // Se actualiza el monto del prorrateo
+                if (prorrateo.get(0)[0] != prorrateoMonto) {
+                    prorrateo.get(0)[0] = prorrateoMonto;
+                    prorrateoRepository.updateMontoProrrateoById((Integer) prorrateo.get(0)[3], prorrateoMonto);
                 }
             }
             // Se retorna el prorrateo
