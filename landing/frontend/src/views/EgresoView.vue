@@ -209,29 +209,30 @@
 
         methods: {
             initFetch() {
-                // Recuperar la cadena JSON del localStorage
-                console.log('initFetch_egreso');
-                const storedUserData = localStorage.getItem('userData');
-                const userData = JSON.parse(storedUserData);
-                this.saludo = 'Hola '+ userData.nombre + '! Ingresa los datos del egreso.';
+            // Obtener el objeto de usuario de localStorage
+                const storedUserDataJSON = localStorage.getItem('userData');
+                if (storedUserDataJSON) {
+                  // Convertir la cadena JSON a un objeto
+                    const storedUserData = JSON.parse(storedUserDataJSON);
                 
-
-                // Verificar si storedUserData no es nulo
-                if (storedUserData) {
-                    console.log('storedUserData_Egreso');
-                    // Convertir la cadena JSON a un objeto JavaScript
-                    
-                    if (userData.tipoUsuario === '0') {
-                        this.$router.push({name: 'EmitirEgreso'});
+                  // Verificar si tipoUsuario existe
+                    if (storedUserData.hasOwnProperty('tipoUsuario')) {
+                        // Redirigir basado en el valor de tipoUsuario
+                        if (storedUserData.tipoUsuario === 0) {
+                            console.log('EGRESOFETCH: navegando a EmitirEgreso');
+                            this.$router.push('/EmitirEgreso');
+                        } else {
+                            console.log('EGRESOFETCH: navegando a GastoComun');
+                            this.$router.push('/GastoComun');
+                        }
+                    } else {
+                        // tipoUsuario no existe, redirigir a login
+                        console.log('EGRESOFETCH: navegando a login');
+                        this.$router.push('/login');
                     }
-                    if (userData.tipoUsuario === '1') {
-                        this.$router.push({name: 'GastosComunes'});
-                    }
-                    else {
-                        console.log('Navegando a login');
-                        this.$router.push({name: 'EmitirEgreso'}); //login
-
-                    }
+                } else {
+                  // userData no existe en localStorage, redirigir a login
+                  this.$router.push('/login');
                 }
             },
             async sendEgresoForm() {
@@ -268,36 +269,12 @@
                     
                 }
             },
-            checkUserTypeAndRedirect() {
-            // Obtener el objeto de usuario de localStorage
-                const storedUserDataJSON = localStorage.getItem('userData');
-                if (storedUserDataJSON) {
-                  // Convertir la cadena JSON a un objeto
-                    const storedUserData = JSON.parse(storedUserDataJSON);
-                
-                  // Verificar si tipoUsuario existe
-                    if (storedUserData.hasOwnProperty('tipoUsuario')) {
-                        // Redirigir basado en el valor de tipoUsuario
-                        if (storedUserData.tipoUsuario === 0) {
-                            this.$router.push('/EmitirEgreso');
-                        } else {
-                        this.$router.push('/GastoComun');
-                        }
-                    } else {
-                        // tipoUsuario no existe, redirigir a login
-                        this.$router.push('/login');
-                    }
-                } else {
-                  // userData no existe en localStorage, redirigir a login
-                  this.$router.push('/login');
-                }
-            },  
+              
             
         },
-        mounted() {
-                this.checkUserTypeAndRedirect();
-                //this.initFetch();
-                console.log('mounted_egreso');
-            },
+        mounted() { 
+            console.log('mounted_egreso');
+            this.initFetch();
+        },
     };
 </script>

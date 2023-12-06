@@ -305,20 +305,36 @@ a:hover{
             monto: '',
             mes:'',
             año:'',
-            Fecha_vencimiento: '01/01/2024',
+            Fecha_vencimiento: 'fecha_venc',
         }),
 
         methods:{
             initFetch() {
-                // Recuperar la cadena JSON del localStorage
-                console.log('initFetch');
-                const storedUserData = localStorage.getItem('userData');
-                // Convertir la cadena JSON a un objeto JavaScript
-                const userData = JSON.parse(storedUserData);
-                this.nombre_user = storedUserData.nombre;
-                this.lista_deptos = storedUserData.idPropiedades;
-            
+            // Obtener el objeto de usuario de localStorage
+                console.log('initFetch_gastos');
+                const storedUserDataJSON = localStorage.getItem('userData');
+                if (storedUserDataJSON) {
+                  // Convertir la cadena JSON a un objeto
+                    const storedUserData = JSON.parse(storedUserDataJSON);
+                    this.nombre_user = storedUserData.nombre;
+                    this.lista_deptos = storedUserData.idPropiedades;
                 
+                  // Verificar si tipoUsuario existe
+                    if (storedUserData.hasOwnProperty('tipoUsuario')) {
+                        // Redirigir basado en el valor de tipoUsuario
+                        if (storedUserData.tipoUsuario === 0) {
+                            this.$router.push('/EmitirEgreso');
+                        } else {
+                        this.$router.push('/GastoComun');
+                        }
+                    } else {
+                        // tipoUsuario no existe, redirigir a login
+                        this.$router.push('/login');
+                    }
+                } else {
+                  // userData no existe en localStorage, redirigir a login
+                  this.$router.push('/login');
+                }
             },
 
             async solicitar_deptos(){
@@ -337,20 +353,20 @@ a:hover{
                         'http://localhost:8080/api/v1/prorrateo/1/'+this.depto + '/' + this.año + '-' + this.mes);
                     console.log(response.data);
                     this.monto = response.data.montoProrrateo;
-
-
-
+                    this.Fecha_vencimiento = response.data.fecha;
+                    console.log(this.Fecha_vencimiento)
                 }
                 catch(error){
                     console.log(error);
                 }
 
-            }
-
-
-
-
-        }
+            },
+            
+        },
+        mounted() {
+            console.log('mounted_gastos');
+            this.initFetch();
+        },
     }
 
 
