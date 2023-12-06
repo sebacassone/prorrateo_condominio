@@ -1,8 +1,0 @@
-{
-    descripcion_gasto: 'pruessssssssba1',
-    monto_gasto: 3232220,
-    fecha_emision: '2023-12-01T13:42:15.637Z',
-    id_edificio: '1',
-    id_usuario: '123456789',
-    nombre_categoria: 'Sueldos'
-}

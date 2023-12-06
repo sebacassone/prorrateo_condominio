@@ -301,24 +301,40 @@ a:hover{
             loading: false,
             lista_deptos: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15'],
             depto: '',
-            nombre_user: "Felipe Pinky",
+            nombre_user: "Nombre User",
             monto: '',
             mes:'',
             año:'',
-            Fecha_vencimiento: '01/01/2024',
+            Fecha_vencimiento: 'fecha_venc',
         }),
 
         methods:{
+    
             initFetch() {
-                // Recuperar la cadena JSON del localStorage
-                console.log('initFetch');
-                const storedUserData = localStorage.getItem('userData');
-                // Convertir la cadena JSON a un objeto JavaScript
-                const userData = JSON.parse(storedUserData);
-                this.nombre_user = storedUserData.nombre;
-                this.lista_deptos = storedUserData.idPropiedades;
-            
+            // Obtener el objeto de usuario de localStorage
+                const storedUserDataJSON = localStorage.getItem('userData');
+                if (storedUserDataJSON) {
+                  // Convertir la cadena JSON a un objeto
+                    const storedUserData = JSON.parse(storedUserDataJSON);
+                    this.nombre_user = storedUserData.nombre;
+                    this.lista_deptos = storedUserData.idPropiedades;
                 
+                  // Verificar si tipoUsuario existe
+                    if (storedUserData.hasOwnProperty('tipoUsuario')) {
+                        // Redirigir basado en el valor de tipoUsuario
+                        if (storedUserData.tipoUsuario === 0) {
+                            this.$router.push('/EmitirEgreso');
+                        } else {
+                        this.$router.push('/GastoComun');
+                        }
+                    } else {
+                        // tipoUsuario no existe, redirigir a login
+                        this.$router.push('/login');
+                    }
+                } else {
+                  // userData no existe en localStorage, redirigir a login
+                  this.$router.push('/login');
+                }
             },
 
             async solicitar_deptos(){
@@ -338,7 +354,8 @@ a:hover{
                     console.log(response.data);
                     this.monto = response.data.montoProrrateo;
 
-
+                    this.Fecha_vencimiento = response.data.fecha;
+                    console.log(this.Fecha_vencimiento)
 
                 }
                 catch(error){
@@ -346,10 +363,11 @@ a:hover{
                 }
 
             }
-
-
-
-
+        },
+        mounted() {
+            console.log('mounted_gasto');
+            //this.checkUserTypeAndRedirect();
+            this.initFetch();
         }
     }
 
