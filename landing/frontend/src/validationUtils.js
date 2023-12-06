@@ -74,3 +74,10 @@ export function formatLoginResponse(infoString) {
 export function formatoNumerico(cadena) {
   return /^[0-9]+$/.test(cadena);
 }
+
+export function formatDate(dateString) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' }; // Puedes personalizar este objeto para cambiar el formato
+  const date = new Date(dateString);
+  return date.toLocaleDateString('es-ES', options); // Cambia 'es-ES' por el locale que prefieras
+}
+

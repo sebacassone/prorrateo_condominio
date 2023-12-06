@@ -1,25 +1,10 @@
-const today = new Date().toISOString()
-console.log(today)
+function formatDate(dateString) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' }; // Puedes personalizar este objeto para cambiar el formato
+  const date = new Date(dateString);
+  return date.toLocaleDateString('es-ES', options); // Cambia 'es-ES' por el locale que prefieras
+}
 
-console.log("33847389".isdigit)
-function formatLoginResponse(infoString) {
-    // Eliminar los caracteres '{' y '}' y dividir por comas
-    let partes = infoString.replace(/[{}]/g, '').split(', ');
-  
-    let datos = {};
-  
-    // Recorrer cada parte y asignar valores al objeto datos
-    partes.forEach((parte) => {
-      let [clave, valor] = parte.split('-');
-      datos[clave] = valor;
-    });
-  
-    return datos;
-  }
-  
-// Usar la función con el string proporcionado 
-let resultado = formatLoginResponse('{tipoUsuario-1, nombre-Juan}');
-
-console.log('Tipo de Usuario:', resultado.tipoUsuario); // Imprime "Tipo de Usuario: 1"
-console.log('Nombre:', resultado.nombre); // Imprime "Nombre: Juan"
-  
+// Uso de la función
+const isoDateString = '2023-12-06T15:30:00.000Z';
+const friendlyDate = formatDate(isoDateString);
+console.log(friendlyDate); // Salida: 6 de diciembre de 2023 (dependiendo del locale)

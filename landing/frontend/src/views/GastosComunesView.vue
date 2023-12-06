@@ -295,6 +295,7 @@ a:hover{
 <script>
     import axios from 'axios';
     import appBar from '../appBar.vue';
+    import {formatDate} from '../validationUtils.js';
 
     export default {
         data: () => ({
@@ -354,7 +355,7 @@ a:hover{
                     console.log(response.data);
                     this.monto = response.data.montoProrrateo;
 
-                    this.Fecha_vencimiento = response.data.fecha;
+                    this.Fecha_vencimiento = formatDate(response.data.fecha);
                     console.log(this.Fecha_vencimiento)
 
                 }
