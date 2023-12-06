@@ -18,7 +18,7 @@
         </template>
         </v-navigation-drawer>
     
-    <v-main>
+    <v-main class="my-main">
     <v-container id="main">
       <v-row>
         <v-col cols="12" md="6">
@@ -28,6 +28,7 @@
             :title="saludo"
             color="#90a955"
             :elevation="3"
+
           
           >
           <v-form >
@@ -124,6 +125,10 @@
     margin-left: 70px;
     }
 
+    .my-main{
+        background-color: #f8f8f8;
+        margin: 0px;
+    }
     .selector-fecha{
         margin-top: 20px;
         margin-left: 70px;
@@ -208,7 +213,8 @@
                 console.log('initFetch_egreso');
                 const storedUserData = localStorage.getItem('userData');
                 const userData = JSON.parse(storedUserData);
-                this.saludo = 'Hola '+storedUserData.nombre + '! Ingresa los datos del egreso.';
+                this.saludo = 'Hola '+ userData.nombre + '! Ingresa los datos del egreso.';
+                
 
                 // Verificar si storedUserData no es nulo
                 if (storedUserData) {
@@ -226,7 +232,7 @@
                         this.$router.push({name: 'EmitirEgreso'}); //login
 
                     }
-                } 
+                }
             },
             async sendEgresoForm() {
                 try {
@@ -261,10 +267,36 @@
                     console.log('B');
                     
                 }
-            }
+            },
+            checkUserTypeAndRedirect() {
+            // Obtener el objeto de usuario de localStorage
+                const storedUserDataJSON = localStorage.getItem('userData');
+                if (storedUserDataJSON) {
+                  // Convertir la cadena JSON a un objeto
+                    const storedUserData = JSON.parse(storedUserDataJSON);
+                
+                  // Verificar si tipoUsuario existe
+                    if (storedUserData.hasOwnProperty('tipoUsuario')) {
+                        // Redirigir basado en el valor de tipoUsuario
+                        if (storedUserData.tipoUsuario === 0) {
+                            this.$router.push('/EmitirEgreso');
+                        } else {
+                        this.$router.push('/GastoComun');
+                        }
+                    } else {
+                        // tipoUsuario no existe, redirigir a login
+                        this.$router.push('/login');
+                    }
+                } else {
+                  // userData no existe en localStorage, redirigir a login
+                  this.$router.push('/login');
+                }
+            },  
+            
         },
         mounted() {
-                this.initFetch();
+                this.checkUserTypeAndRedirect();
+                //this.initFetch();
                 console.log('mounted_egreso');
             },
     };

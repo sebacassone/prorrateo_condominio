@@ -186,15 +186,28 @@
                     // Almacenar en localStorage
                     localStorage.setItem('userData', userData);
                     
-                    console.log(response.data.tipoUsuario); // Debería imprimir el valor de tipoUsuario
-                    console.log(typeof response.data.tipoUsuario); // Debería imprimir el tipo de tipoUsuario
-
-                    if (response.data.tipoUsuario === 0) {
-                        console.log('Navegando a EmitirEgreso2');
-                        this.$router.push({ name: 'GastoComun' });
+                    const storedUserDataJSON = localStorage.getItem('userData');
+                    if (storedUserDataJSON) {
+                      // Convertir la cadena JSON a un objeto
+                        const storedUserData = JSON.parse(storedUserDataJSON);
+                    
+                      // Verificar si tipoUsuario existe
+                        if (storedUserData.hasOwnProperty('tipoUsuario')) {
+                            // Redirigir basado en el valor de tipoUsuario
+                            if (storedUserData.tipoUsuario === 0) {
+                                console.log('login(): navegando a EmitirEgreso');
+                                this.$router.push('/EmitirEgreso');
+                            } else {
+                                console.log('login(): navegando a GastoComun');
+                                this.$router.push('/GastoComun');
+                            }
+                        } else {
+                            // tipoUsuario no existe, redirigir a login
+                            this.$router.push('/login');
+                        }
                     } else {
-                        console.log('Navegando a EmitirEgreso');
-                        this.$router.push({ name: 'EmitirEgreso' });
+                      // userData no existe en localStorage, redirigir a login
+                      this.$router.push('/login');
                     }
 
                 } catch (error) {
