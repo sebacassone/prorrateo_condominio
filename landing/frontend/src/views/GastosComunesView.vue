@@ -1,6 +1,6 @@
 <template>
     <v-app>        
-        <v-app-bar class="Head"  color="rgb(226, 235, 171)" :elevation="5" height="130">
+        <v-app-bar  color="rgb(226, 235, 171)" :elevation="5" height="150">
             <h1 class="text-center" id="Titulo">Gastos Comunes</h1>
 
             <div id="Marco_logo">
@@ -26,19 +26,21 @@
                     </v-card>
 
                     <v-autocomplete id="Mes"
+                        v-model="mes"
                         max-width="35px"
                         clearable
                         label="Mes"
-                        :items="['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto','Septiembre', 'Octubre', 'Noviembre', 'Diciembre']"
+                        :items="[1,2,3,4,5,6,7,8,9,10,11,12]"
                         placeholder="Mes"
                     
                     ></v-autocomplete>
 
                     <v-autocomplete id="Año"
+                        v-model="año"
                         max-width="1px"
                         clearable
                         label="Año"
-                        :items="[2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028]"
+                        :items="[2021, 2022, 2023]"
                         placeholder="Año"
                     
                     ></v-autocomplete>
@@ -52,17 +54,38 @@
                     </v-card>
 
                     <v-autocomplete id="Deptos_list"
+                        v-model ="depto"
                         clearable
                         label="Numero"
-                        :items="['1', '2', '3', '4', '5', '6']"
+                        :items="lista_deptos"
+
                         placeholder="#"
-                    
                     ></v-autocomplete>
+
+                    <v-card-actions class="justify-center">
+                            <div class="btn-container">
+                                <v-btn
+                                    class="rounded-lg text-white px-5"
+                                    color="#98d00e"
+                                    elevation="10"
+                                    :loading="loading"
+                                    size="large"
+                                    @click="solicitar_gasto_comun"
+                                    variant="flat"
+                                >
+                                    <div class="text-h font-weight-medium text-white">
+                                    Solicitar
+                                    </div>
+                                </v-btn>
+                            </div>
+                        </v-card-actions>
+
+
                 </v-container>
 
                 <v-container id="Mensaje">
-                    <v-alert icon="$vuetify" text="" type="warning" color="#98d00e">
-                        <p id="Mensaje_msg"> Hola Nombre de Logueado (*En negrilla*) ya esta disponible el Gasto Comun, pagar antes de Fecha(*en rojo y más grande*)</p>
+                    <v-alert icon="$vuetify" text="" type="warning" color="#98d00e" elevation="1">
+                        <p id="Mensaje_msg"> Hola "{{nombre_user}}" ya esta disponible el Gasto Comun, pagar antes de {{Fecha_vencimiento}}</p>
                     </v-alert>
                 </v-container>
             </v-container>
@@ -74,7 +97,7 @@
                 <v-container id="vencimiento"> 
                     <p id="Fecha_vencimiento_text" class="text-center"> Fecha de vencimiento</p>
                     <v-container id="fecha">
-                        <p id="fecha_msg" class="text-center"> 10/10/2021 </p>
+                        <p id="fecha_msg" class="text-center"> {{Fecha_vencimiento}} </p>
                     
                     </v-container>
 
@@ -83,9 +106,12 @@
                 
                 <v-container id="monto_BOX"> 
                     <p id="Monto_a_pagar_texto" class="text-center">MONTO A PAGAR:</p>
-                    <v-container id="monto">
-                        <p id="monto_texto" class="text-center"> $ 100.000 </p>
-                    </v-container>
+
+                    <v-btn block rounded="xl" size="x-large" color="#98d00e" elevation="6">
+                        <div class="text-h font-weight-medium text-white">
+                                    $ {{ monto }}
+                        </div>
+                    </v-btn>
                     
     
                 </v-container>
@@ -168,11 +194,11 @@ height: 100%;
 
 #Boxperiodo{
     align-items: center;
-    max-width: 20%;
+    max-width: 30%;
 }
 
 #Periodo{
-    font-size: 16px;
+    font-size: 17px;
     font-weight: bold;
     color: #557153;
 }
@@ -183,7 +209,7 @@ height: 100%;
 
 #BoxpeDeptos{
     align-items: center;
-    max-width: 40%;
+    max-width: 50%;
 }
 
 #Mes{
@@ -264,3 +290,72 @@ a:hover{
 }
 
 </style>
+
+
+<script>
+    import axios from 'axios';
+    import appBar from '../appBar.vue';
+
+    export default {
+        data: () => ({
+            loading: false,
+            lista_deptos: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15'],
+            depto: '',
+            nombre_user: "Felipe Pinky",
+            monto: '',
+            mes:'',
+            año:'',
+            Fecha_vencimiento: '01/01/2024',
+        }),
+
+        methods:{
+            initFetch() {
+                // Recuperar la cadena JSON del localStorage
+                console.log('initFetch');
+                const storedUserData = localStorage.getItem('userData');
+                // Convertir la cadena JSON a un objeto JavaScript
+                const userData = JSON.parse(storedUserData);
+                this.nombre_user = storedUserData.nombre;
+                this.lista_deptos = storedUserData.idPropiedades;
+            
+                
+            },
+
+            async solicitar_deptos(){
+                try{
+                    
+
+                }
+                catch(error){
+                    console.log(error);
+                }
+            },
+
+            async solicitar_gasto_comun(){
+                try{
+                    const response = await axios.get(
+                        'http://localhost:8080/api/v1/prorrateo/1/'+this.depto + '/' + this.año + '-' + this.mes);
+                    console.log(response.data);
+                    this.monto = response.data.montoProrrateo;
+
+
+
+                }
+                catch(error){
+                    console.log(error);
+                }
+
+            }
+
+
+
+
+        }
+    }
+
+
+
+
+
+
+</script>
