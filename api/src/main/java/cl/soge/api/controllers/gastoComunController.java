@@ -27,9 +27,11 @@ public class gastoComunController {
             boolean result = this.gastoComunServices.registrarGastoComun(
                     (String) jsonMap.get("descripcion_gasto"),
                     (Integer) jsonMap.get("monto_gasto"),
-                    new SimpleDateFormat("yyyy-MM-dd").parse((String) jsonMap.get("fecha_emision")),
+                    new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse((String) jsonMap.get("fecha_emision")),
                     Integer.valueOf(jsonMap.get("id_edificio").toString()),
-                    (String) jsonMap.get("id_usuario"));
+                    (String) jsonMap.get("id_usuario"),
+                    (String) jsonMap.get("nombre_categoria")); // Asume que se pasa "nombre_categoria" en el JSON
+
             if (result) {
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Gasto común registrado con éxito"));
             } else {
@@ -40,4 +42,5 @@ public class gastoComunController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Error interno del servidor: " + error.getMessage()));
         }
     }
+
 }
