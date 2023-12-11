@@ -4,8 +4,7 @@ En esta fase preeliminar del proyecto, está pensado para uso de manera local. P
 Algunos integrantes usaron Docker para levantar el proyecto, debido que no era requisito se dejó en un gitignore para que no se incluyera en los archivos del proyecto.
 
 ## Backend
-### Requisitos: 
-    - Tener instalado JDK 17.0.9
+### Requisitos: JDK 17.0.9
 
 Levantar backend algún IDE de Java. O en su defecto ejecutar el backend sin antes ingresar api/src/main/java/cl/soge/api y ejecutar el siguiente comando
 
@@ -14,8 +13,7 @@ mvnw spring-boot:run
 ```
 
 ## Frontend
-### Requisitos: 
-    - Tener instalado Node.js 18.15.0
+### Requisitos: Node.js 18.15.0
 
 - Ir a la carpeta de landing/frontend, ahí ejecutar para instalar las dependencias del proyecto:
 
@@ -31,12 +29,11 @@ npm run dev
 Con esto se levantará el Frontend
 
 ## Database
-### Requisitos
-    - Tener instalado PostgreSQL 12.17
+### Requisitos: PostgreSQL 12.17
 Con respecto a la configuración de la base de datos, consultar con los desarrolladores.
 
-### Desarrolladores
-# Equipo de Desarrollo
+## Desarrolladores
+### Equipo de Desarrollo
 
 | [Sebastian Cassone](https://github.com/sebacassone/) | [ByronCaices](https://github.com/ByronCaices) | [Jaime Riquelme](https://github.com/JaimeRiquelme) | [Perro Wachooo](https://github.com/PerroWachooo) |
 | ----------------------------------------------------- | ---------------------------------- | -------------------------------------------------- | ------------------------------------------------- |
