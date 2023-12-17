@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Data // Sirve para generar los getters y setters
+@AllArgsConstructor // Sirve para generar un constructor con todos los argumentos
+@NoArgsConstructor // Sirve para generar un constructor vacío
 @Table(name = "usuario")
 public class usuarioModel {
     @Id
@@ -23,11 +23,13 @@ public class usuarioModel {
     private String correo;
     private String password;
 
+    // Relación muchos a uno con la tabla edificio
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "idEdificio")
     private edificioModel edificio;
 
+    // Relación muchos a muchos con la tabla propiedad
     @JsonIgnore
     @ManyToMany(cascade = {
             CascadeType.MERGE,
