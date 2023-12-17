@@ -1,5 +1,6 @@
 <template>
-    <v-app>        
+    <v-app>   
+        <!-- Barra de navegación -->     
         <v-app-bar  color="#1a1a1a" :elevation="5" height="150">
             <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <h1 class="text-center" id="Titulo">Gastos Comunes</h1>
@@ -9,18 +10,18 @@
             </div>
         </v-app-bar>
 
-
+        <!-- Barra lateral de navegación -->
         <v-navigation-drawer  v-model="drawer" temporary>
         <v-list-item
-          prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg"
+          prepend-avatar="https://randomuser.me/api/portraits/lego/2.jpg"
           
         >{{nombre_user}}</v-list-item>
 
         <v-divider></v-divider>
-
+        <!-- Boton De -->
         <v-list density="compact" nav>
           <v-list-item
-            href="/login"
+            @click="logout"
             prepend-icon="mdi-logout"
             title="Logout"
           ></v-list-item>
@@ -121,6 +122,17 @@
 
                 <v-container id="vencimiento"> 
                     <p id="Fecha_vencimiento_text" class="text-center"> Fecha de vencimiento:</p>
+                    <!-- Alerta en caso en que no exista el gasto comun -->
+                    <v-alert class="alert-custom"
+                            margin-top="10px"
+                            v-model="alert_error"
+                            type="error"
+                            variant="outlined"
+                            height="70px"
+                            width="auto"
+                           
+                        >Gasto Comun no existente</v-alert>
+
                     <v-container id="fecha">
                         <p id="fecha_msg" class="text-center"> {{Fecha_vencimiento}} </p>
                     
@@ -367,12 +379,19 @@ a:hover{
             },
 
             
-
+            logout() {
+                console.log('logout()');
+                // Eliminar el objeto de usuario de localStorage
+                localStorage.removeItem('userData');
+                // Redirigir a la página de inicio de sesión
+                this.$router.push('/login');
+            },
             async solicitar_gasto_comun(){
                 try{
                     const response = await axios.get(
                         'http://localhost:8080/api/v1/prorrateo/1/'+this.depto + '/' + this.año + '-' + this.mes);
                     console.log(response.data);
+                    this.alert_error = false;
                     this.monto = response.data.montoProrrateo;
 
                     this.Fecha_vencimiento = formatDate(response.data.fecha);
@@ -380,6 +399,9 @@ a:hover{
 
                 }
                 catch(error){
+                    this.alert_error = true;
+                    this.Fecha_vencimiento = '';
+                    this.monto = '';
                     console.log(error);
                 }
 
