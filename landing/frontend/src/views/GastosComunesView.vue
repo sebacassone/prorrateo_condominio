@@ -1,30 +1,55 @@
 <template>
     <v-app>        
-        <v-app-bar  color="rgb(226, 235, 171)" :elevation="5" height="150">
+        <v-app-bar  color="#1a1a1a" :elevation="5" height="150">
+            <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <h1 class="text-center" id="Titulo">Gastos Comunes</h1>
-
+            
             <div id="Marco_logo">
-                <img class="soge-logo" src="../components/images/soge_logo2.png" alt="Logo">
+                <img class="soge-logo" src="../components/images/soge_logo3.png" alt="Logo">
             </div>
         </v-app-bar>
 
-        <v-navigation-drawer color="rgb(226, 235, 171)" rail permanent>
-        <template v-slot:append>
-          <div class="pa-2">
-            <v-btn block href="/login" color="rgb(226, 235, 171)">
-              <v-icon  icon="mdi-logout"></v-icon>
-            </v-btn>
-          </div>
-        </template>
-        </v-navigation-drawer>
+
+        <v-navigation-drawer  v-model="drawer" temporary>
+        <v-list-item
+          prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg"
+          
+        >{{nombre_user}}</v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list density="compact" nav>
+          <v-list-item
+            href="/login"
+            prepend-icon="mdi-logout"
+            title="Logout"
+          ></v-list-item>
+         
+        </v-list>
+      </v-navigation-drawer>
+
+
 
         <v-main>
             <v-container>
+                <v-alert
+                v-model="alert_periodo"
+                variant="tonal"
+                closable
+                close-label="Close Alert"
+                color="green"
+                title="Como Funciona:"
+                >
+                
+                Selecciona el Mes como numero (1-12) y el Año (2021-2023), luego seleccióna el numero del departamento y presiona el boton "Solicitar" para ver el gasto común.
+                </v-alert>
                 <v-container id="Fecha">
                     <v-card id="Boxperiodo">
-                        <p class="text-center" id="Periodo">Periodo:</p>
+                        <p class="text-center" id="Periodo">
+                            <v-btn  @click="alert_periodo = true" density="compact" size="small" icon="$info"></v-btn>
+                            Periodo:</p>
                     </v-card>
-
+                    
                     <v-autocomplete id="Mes"
                         v-model="mes"
                         max-width="35px"
@@ -95,7 +120,7 @@
             <v-container>
 
                 <v-container id="vencimiento"> 
-                    <p id="Fecha_vencimiento_text" class="text-center"> Fecha de vencimiento</p>
+                    <p id="Fecha_vencimiento_text" class="text-center"> Fecha de vencimiento:</p>
                     <v-container id="fecha">
                         <p id="fecha_msg" class="text-center"> {{Fecha_vencimiento}} </p>
                     
@@ -118,7 +143,7 @@
                 <v-container id="datos"> 
                      
                 
-                <v-card class="mx-auto my-8" max-width="500" elevation="9" color="#98d00e">
+                <v-card class="mx-auto my-7" max-width="480" elevation="9" color="#98d00e">
                     <v-card-item>
                     <v-card-title id="Titulo_tarjeta"> Datos de Transferencia: </v-card-title>
                     <v-card-subtitle id="sub_tarjeta"> Solo transferencia, Pago por Web No disponible </v-card-subtitle>
@@ -150,12 +175,13 @@
 #Titulo{
     font-size: 40px;
     font-weight: bold;
-    color: #557153;
+    color: #ffff;
     margin-top: 10px;
     margin-left: 10px;
 }
 
 #Marco_logo{
+    align-self: right;
     display: flex;
     align-items: right;
     margin-left: 10px;
@@ -163,19 +189,18 @@
     width: 142px;
 }
 .soge-logo {
-    background-color: rgb(226, 235, 171);
-
+    
+    padding-bottom: 10px;
     height: 140px;
 }
 
 .v-main {
-background-color: rgb(226, 235, 171);
+background-color: #fff9ef;
 display: flex;
 grid-template-columns: 1fr 1fr;
 padding-top: 140px;
 padding-bottom: 70px;
-height: 100%;
-}
+height: 100%;}
 
 #Fecha{
     height: 33%;
@@ -183,7 +208,7 @@ height: 100%;
 }
 
 #Info{
-    height: 45%;
+    height: 35%;
   
 }
 
@@ -275,7 +300,7 @@ height: 100%;
 #datos{
     height: 33%;
     width: 100%;
-    padding-top: 30px;
+    padding-top: 15px;
 
 }
 
@@ -299,6 +324,9 @@ a:hover{
 
     export default {
         data: () => ({
+            alert_error: false,
+            alert_periodo: true,
+            drawer: false,
             loading: false,
             lista_deptos: ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15'],
             depto: '',
@@ -306,7 +334,7 @@ a:hover{
             monto: '',
             mes:'',
             año:'',
-            Fecha_vencimiento: 'fecha_venc',
+            Fecha_vencimiento: '',
         }),
 
         methods:{
@@ -338,15 +366,7 @@ a:hover{
                 }
             },
 
-            async solicitar_deptos(){
-                try{
-                    
-
-                }
-                catch(error){
-                    console.log(error);
-                }
-            },
+            
 
             async solicitar_gasto_comun(){
                 try{
