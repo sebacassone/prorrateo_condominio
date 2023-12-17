@@ -13,12 +13,12 @@
 
         <v-navigation-drawer  v-model="drawer" temporary>
         <v-list-item
-          prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg"
+          prepend-avatar="https://randomuser.me/api/portraits/lego/2.jpg"
           
         >{{nombre_user}}</v-list-item>
 
         <v-divider></v-divider>
-
+        <!-- Boton De -->
         <v-list density="compact" nav>
           <v-list-item
             @click="logout"
@@ -217,6 +217,7 @@
             date: null,
             saludo: 'SALUDO A INGRESAR',
             monto: '',
+            nombre_user: 'Nombre Usuario',
             desc: '',
             drawer: false,
             textoAlerta: 'Egreso emitido con éxito',
@@ -250,11 +251,12 @@
         methods: {
             initFetch() {
             
-            // Obtener el objeto de usuario de localStorage
+                // Obtener el objeto de usuario de localStorage
                 const storedUserDataJSON = localStorage.getItem('userData');
                 if (storedUserDataJSON) {
                   // Convertir la cadena JSON a un objeto
                     const storedUserData = JSON.parse(storedUserDataJSON);
+                    this.nombre_user = storedUserData.nombre;
                 
                   // Verificar si tipoUsuario existe
                     if (storedUserData.hasOwnProperty('tipoUsuario')) {

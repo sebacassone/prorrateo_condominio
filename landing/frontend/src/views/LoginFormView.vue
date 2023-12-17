@@ -184,6 +184,7 @@
         },
         methods: {
             initFetch() {
+                this.logout();
                 // Recuperar la cadena JSON del localStorage
                 console.log('initFetch');
                 const storedUserData = localStorage.getItem('userData');
@@ -259,6 +260,11 @@
             },
             setCardSize(){
                 this.sizevcard = 320;
+            },
+            logout() {
+                console.log('logout');
+                localStorage.removeItem('userData');
+                this.$router.push('/login');
             },
         },
         mounted() {
