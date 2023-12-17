@@ -5,10 +5,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Data // Sirve para generar los getters y setters
+@AllArgsConstructor // Sirve para generar un constructor con todos los argumentos
+@NoArgsConstructor // Sirve para generar un constructor vacío
 @Table(name = "Contrato")
+/**
+ * Clase que representa la tabla Contrato de la base de datos
+ */
 public class contratoModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

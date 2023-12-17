@@ -2,19 +2,23 @@
     <v-app>
         <header>
             <img
-                class="soge-logo"
-                height="250"
-                background-color="primary"
-                src="../components/images/soge_logo2.png"
+                class="soge-logo-login"
+                height="200"
+                src="../components/images/soge_logo3.png"
             ><img/>
         </header>
-        <v-main class="d-flex align-center justify-center bg-color-black"
-                background-color= "#f5f0bb">
+        <v-main class="d-flex justify-center bg-color-black v-main-custom-margin"
+                background-color= "#f5f0bb"
+                >
+            
+            <div class="container-v-card">
+                
             <v-card
                 
-                color="#0d2c24"
-                class="rounded-lg px-10 py-5 align-center text-center"
+                color="#1a1a1a"
+                class="rounded-lg px-10 py-5 align-center text-center v-card-custom"
                 width="450"
+                :height="sizevcard"
                 :elevation="3"
                 
             >
@@ -66,8 +70,22 @@
                                 </v-btn>
                             </div>
                         </v-card-actions>
+                        <v-divider></v-divider>
+                        <v-alert class="alert-custom"
+                            margin-top="10px"
+                            v-model="loginError"
+                            closable
+                            :text="textoAlerta"
+                            type="error"
+                            variant="outlined"
+                            height="70px"
+                            width="auto"
+                            @click:close="setCardSize"
+                        ></v-alert>
                 </v-form>
             </v-card>
+            
+        </div>
         </v-main>
     
     </v-app>
@@ -76,15 +94,34 @@
 <style scoped>
     header{
         position: relative;
-        background-color:rgb(226, 235, 171);
-        height: 123px;
+        background-color:#1a1a1a;
+        height: 270px;
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        border-bottom: 3px solid #A9AF7E;
+        border-bottom: 3px solid #a4d719;
         
     }
+
+    .container-v-card{
+        margin-top: 100px;
+        display: grid;
+        grid-template-columns: 1fr; /* Una sola columna */
+        row-gap: 0; /* Sin espacio entre filas */
+    }
+
+    .alert-custom{
+        background-color: #1a1a1a;
+        margin-top: 20px;
+        color: #f6f6f6;
+        border: 1px solid #f6f6f6;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+    }
+
 
     .header::before {
         content: ''; /* Esto crea un pseudo-elemento */
@@ -95,14 +132,15 @@
         background-color: #a2a2a2; /* Color de la línea */
         z-index: 1; /* Asegura que la línea esté debajo del logo */
     }
-    .soge-logo{
+    .soge-logo-login{
         margin-top: auto;
         position: relative;
         z-index: 2;
     }
     .v-main{
-        background-color: rgb(226, 235, 171);
+        background-color: #fff9ef;
     }
+
 </style>
 
 <script>
@@ -118,6 +156,9 @@
             show1: true,
             loading: false,
             form: false,
+            loginError: false,
+            textoAlerta: 'Usuario no registrado o contraseña incorrecta',
+            sizevcard: 320,
             rutRules: [
                 value => {
                     if (value) return true
@@ -173,11 +214,11 @@
                             password: this.contrasena
                         }
                     );
-                    console.log(response.data);
+                    //console.log(response.data);
                     response.data.rut = this.rut.replace('-','');
                     console.log(response.data);
-                    console.log(response.data.tipoUsuario);
-                    console.log(response.data.idEdificio);
+                    //console.log(response.data.tipoUsuario);
+                    //console.log(response.data.idEdificio);
 
 
                     // Convertir el objeto de datos a una cadena JSON
@@ -211,9 +252,14 @@
                     }
 
                 } catch (error) {
-                    console.error('A');
+                    this.sizevcard = 400;
+                    this.loginError = true;
+                    console.error('Usuario no registrado o contraseña incorrecta');
                 }
-            }
+            },
+            setCardSize(){
+                this.sizevcard = 320;
+            },
         },
         mounted() {
                 this.initFetch();

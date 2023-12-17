@@ -24,6 +24,12 @@ public class prorrateoServices {
     @Autowired
     private gastoComunRepository gastoComunRepository;
 
+    /**
+     * Valida que la fecha sea válida
+     *
+     * @param fecha - fecha a validar
+     * @return
+     */
     private Boolean validarFecha(String fecha) {
         try {
             // Si el mes tiene una fecha valida (YYYY-MM)
@@ -48,6 +54,12 @@ public class prorrateoServices {
         }
     }
 
+    /**
+     * Calcula el monto del prorrateo
+     *
+     * @param datos - datos para calcular el prorrateo
+     * @return
+     */
     private Integer calcularMontoProrrateo(List<Object[]> datos) {
         try {
             if (datos == null || datos.isEmpty()) {
@@ -72,6 +84,14 @@ public class prorrateoServices {
         }
     }
 
+    /**
+     * Calcula la fecha de vencimiento
+     *
+     * @param fechaDate - fecha
+     * @param fecha     - fecha en string
+     * @return
+     * @throws ParseException
+     */
     private Date fechaVencimiento(Date fechaDate, String fecha) throws ParseException {
         // Convierte la fecha a un objeto Calendar
         Calendar calendar = Calendar.getInstance();
@@ -83,6 +103,14 @@ public class prorrateoServices {
         return fechaVencimiento;
     }
 
+    /**
+     * Crea un nuevo prorrateo
+     *
+     * @param idEdificio  - id del edificio
+     * @param numeroDepto - numero de departamento
+     * @param fecha       - fecha
+     * @return
+     */
     private List<Object[]> crearProrrateo(Integer idEdificio, Integer numeroDepto, String fecha) {
         try {
             // Se transforma un string a fecha
@@ -122,6 +150,14 @@ public class prorrateoServices {
         }
     }
 
+    /**
+     * Obtiene el prorrateo de un departamento en un mes y año especifico
+     *
+     * @param idEdificio  - id del edificio
+     * @param numeroDepto - numero de departamento
+     * @param fecha       - fecha
+     * @return
+     */
     public Map<String, Object> prorrateo(Integer idEdificio, Integer numeroDepto, String fecha) {
         try {
             if (!validarFecha(fecha)) {

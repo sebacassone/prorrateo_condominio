@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Data // Sirve para generar los getters y setters
+@AllArgsConstructor // Sirve para generar un constructor con todos los argumentos
+@NoArgsConstructor // Sirve para generar un constructor vacío
 @SequenceGenerator(name = "prorrateo_seq", sequenceName = "prorrateo_seq", allocationSize = 1)
 @Table(name = "prorrateo")
 public class prorrateoModel {
@@ -26,6 +26,7 @@ public class prorrateoModel {
     private Date fechaVencimiento;
     private Integer montoProrrateo;
 
+    // Relación muchos a uno con la tabla propiedad
     @ManyToOne
     @JoinColumn(name = "numero_departamento")
     private propiedadModel propiedad;

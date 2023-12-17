@@ -10,11 +10,15 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Data // Sirve para generar los getters y setters
+@AllArgsConstructor // Sirve para generar un constructor con todos los argumentos
+@NoArgsConstructor // Sirve para generar un constructor vacío
+// SequenceGenerator es para generar el id de forma automática a partir de una secuencia
 @SequenceGenerator(name = "gasto_comun_seq", sequenceName = "gasto_comun_seq", allocationSize = 1)
 @Table(name = "gasto_comun")
+/**
+ * Clase que representa la tabla GastoComun de la base de datos
+ */
 public class gastoComunModel {
 
     @Id
@@ -27,17 +31,19 @@ public class gastoComunModel {
     private Date fechaEmision;
     private Date fechaRegistro;
 
-
+    // Relación muchos a uno con la tabla edificio
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_edificio")
     private edificioModel edificio;
 
+    // Relación muchos a uno con la tabla usuario
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "id_usuario")
     private usuarioModel usuario;
 
+    // Relación muchos a muchos con la tabla categoria
     @JsonIgnore
     @ManyToMany(cascade = {
             CascadeType.MERGE,
