@@ -249,7 +249,7 @@
 
         methods: {
             initFetch() {
-            /*
+            
             // Obtener el objeto de usuario de localStorage
                 const storedUserDataJSON = localStorage.getItem('userData');
                 if (storedUserDataJSON) {
@@ -275,7 +275,7 @@
                   // userData no existe en localStorage, redirigir a login
                   this.$router.push('/login');
                 }
-                */
+                
             },
             async sendEgresoForm() {
                 try {
