@@ -1,23 +1,33 @@
 
 <template>
     <v-app>
-      <v-app-bar class="Head"  color="rgb(226, 235, 171)" :elevation="3" height="130">
-        <h1 class="text-center" id="Titulo">Emitir Egreso</h1>
-
+        <v-app-bar  color="#1a1a1a" :elevation="5" height="150">
+            <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+            <h1 class="text-center" id="Titulo">Emitir Egreso</h1>
+            
             <div id="Marco_logo">
-                <img class="soge-logo" src="../components/images/soge_logo2.png" alt="Logo">
+                <img class="soge-logo" src="../components/images/soge_logo3.png" alt="Logo">
             </div>
         </v-app-bar>
 
-        <v-navigation-drawer color="rgb(226, 235, 171)" rail permanent>
-        <template v-slot:append>
-          <div class="pa-2">
-            <v-btn block href="/login" color="rgb(226, 235, 171)">
-              <v-icon  icon="mdi-logout"></v-icon>
-            </v-btn>
-          </div>
-        </template>
-        </v-navigation-drawer>
+
+        <v-navigation-drawer  v-model="drawer" temporary>
+        <v-list-item
+          prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg"
+          
+        >{{nombre_user}}</v-list-item>
+
+        <v-divider></v-divider>
+
+        <v-list density="compact" nav>
+          <v-list-item
+            @click="logout"
+            prepend-icon="mdi-logout"
+            title="Logout"
+          ></v-list-item>
+         
+        </v-list>
+      </v-navigation-drawer>
     
     <v-main class="my-main">
     <v-container id="main">
@@ -27,7 +37,8 @@
           <v-card
             class="rounded-lg px-10 py-5 align-center text-center"
             :title="saludo"
-            color="#90a955"
+            font-weight-bold
+            color="#1da368"
             :elevation="3"
 
           
@@ -37,7 +48,7 @@
                   v-model="monto"
                   :rules="montoRules"
                   label="Monto"
-                  variant="underlined"
+                  variant="solo-filled"
                   required
                   placeholder="Ingrese solo valores numéricos"
                   hint="Ejemplo: 123000"                      
@@ -49,7 +60,7 @@
                   :rules="contraRules"
                   maxlength="120"
                   label="Descripción"
-                  variant="underlined"
+                  variant="solo-filled"
                   placeholder="Ingresa una descripción"
                   hint="Máximo 120 caracteres"                      
               ></v-text-field>
@@ -57,16 +68,17 @@
                   v-model="date"
                   :rules="contraRules"
                   label="Fecha"
-                  variant="underlined"
-                  required
+                  variant="solo-filled"
+                  readonly
                   placeholder="Selecciona fecha desde el calendario"
-                  hint="Ejemplo: 123000"                      
+                                      
                   ></v-text-field>
               <v-autocomplete
                   v-model="categoria"
+                  required
                   label="Categoría"
                   :items="lista_categorias"
-                  variant="underlined"
+                  variant="solo-filled"
                   placeholder="Selecciona el tipo de gasto"
               ></v-autocomplete>
               <v-card-actions class="justify-center">
@@ -74,7 +86,7 @@
                                 <v-btn
                                     class="rounded-lg text-white px-5"
                                     :loading="loading"
-                                    
+                                    prepend-icon="mdi-check-circle"
                                     size="large"
                                     @click="sendEgresoForm"
                                     variant="tonal"
@@ -85,17 +97,28 @@
                                 </v-btn>
                             </div>
                         </v-card-actions>
-
+                        <v-alert class="alert-custom"
+                            margin-top="10px"
+                            v-model="notifEgreso"
+                            closable
+                            :text="textoAlerta"
+                            type="success"
+                            variant="outlined"
+                            height="70px"
+                            width="auto"
+                            
+                        ></v-alert>
             </v-form>
         </v-card>
+        
         </v-col>
-        <v-divider color="warning" vertical></v-divider>
+        <v-divider vertical></v-divider>
         <v-col cols="12" md="6">
           <!-- Contenido del segundo bloque -->
           <v-card
             class="rounded-lg px-10 py-5 align-center text-center size-card-title"
             title="Selecciona Fecha"
-            color="#90a955"
+            color="#1da368"
             :elevation="3"
           > 
             <v-date-picker class="selector-fecha"
@@ -104,7 +127,7 @@
                 title="Seleccione fecha de emisión"
                 show-adjacent-months
                 :max="today"
-                bg-color="#0d2c24"
+                bg-color="#1a1a1a"
                 position="relative"
                 
                 >
@@ -118,16 +141,25 @@
 </template>
 
 <style scoped>
+
     #Titulo{
-    font-size: 40px;
-    font-weight: bold;
-    color: #0d2c24;
-    margin-top: 10px;
-    margin-left: 70px;
+        font-size: 40px;
+        font-weight: bold;
+        color: #ffff;
+        margin-top: 10px;
+        margin-left: 10px;
     }
 
+    #Marco_logo{
+        align-self: right;
+        display: flex;
+        align-items: right;
+        margin-left: 10px;
+        margin-top: 10px;
+        width: 142px;
+    }
     .my-main{
-        background-color: #f8f8f8;
+        background-color: #fff9ef;
         margin: 0px;
     }
     .selector-fecha{
@@ -137,13 +169,7 @@
         margin-bottom: 20px;
     }
 
-    #Marco_logo{
-    display: flex;
-    align-items: right;
-    margin-right: 100px;
-    margin-top: 10px;
-    width: 142px;
-    }
+
     header{
         background-color: #90a955;
         height: 150px;
@@ -153,19 +179,29 @@
         align-items: center;
     }
     .soge-logo {
-    background-color: rgb(226, 235, 171);
+    
+    padding-bottom: 10px;
     height: 140px;
 }
-
     .v-main{
         margin-top: 50px;
-        background-color: #f8f8f8;
+        background-color: #fff9ef;
     }
 
     .size-card-title{
         font-size: 100px;
     }
-
+    .alert-custom{
+        background-color: #1a1a1a;
+        margin-top: 20px;
+        opacity: 0.6;
+        color: #f6f6f6;
+        border: 1px solid #f6f6f6;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+    }
 
 
 </style>
@@ -182,6 +218,9 @@
             saludo: 'SALUDO A INGRESAR',
             monto: '',
             desc: '',
+            drawer: false,
+            textoAlerta: 'Egreso emitido con éxito',
+            notifEgreso: false,
             categoria: '',
             lista_categorias: ['Reparacion', 'Egresos', 'Insumos', 'Sueldos', 'Servicios Básicos', 'Bonos','Otros'],
             contrasena: '', //borrar
@@ -267,10 +306,16 @@
                             
                         }
                     );
+                    this.notifEgreso = true;
                 } catch (error) {
                     console.log('B');
                     
                 }
+            },
+            logout() {
+                console.log('logout');
+                localStorage.removeItem('userData');
+                this.$router.push('/login');
             },
               
             
